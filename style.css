@@ -1,0 +1,35 @@
+body {
+  font-family: sans-serif;
+  background-color: #f3ead8;
+}
+
+#office {
+  display: flex;
+  gap: 20px;
+}
+
+#left-side,
+#right-side {
+  flex: 1;
+  padding: 16px;
+  border: 2px dashed #8a7a5c;
+}
+
+#window,
+#bookcase,
+#chaise,
+#desk {
+  margin-bottom: 12px;
+  padding: 16px;
+  background-color: #b5d6e0;
+}
+#chaise {
+    background-color: #b69acb;
+}
+
+#case-panel {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #fffbe8;
+  border: 2px solid #8a7a5c;
+}
