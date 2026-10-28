@@ -19,3 +19,23 @@ if (caseButton && casePanel) {
     caseButton.textContent = isOpen ? "Close Case File" : "Look at the Case File";
   });
 }
+const begoniaBook = document.getElementById("begonia-book");
+const mabelDialogue = document.getElementById("mabel-dialogue");
+
+if (begoniaBook && mabelDialogue) {
+    begoniaBook.setAttribute("aria-controls", "mabel-dialogue");
+    begoniaBook.setAttribute("aria-expanded", "false");
+
+    begoniaBook.addEventListener("click", function () {
+        mabelDialogue.hidden = !mabelDialogue.hidden;
+
+        const isOpen = !mabelDialogue.hidden;
+
+        begoniaBook.setAttribute("aria-expanded", String(isOpen));
+
+        if (isOpen) {
+            mabelDialogue.textContent =
+                "The flowers are innocent, Detective. It's what's hiding inside them that confounds me.";
+        }
+    });
+}
