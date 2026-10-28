@@ -47,7 +47,7 @@ body {
     border-radius: 8px;
 }
 .desk-folder {
-    background-color: #d9b86c;
+    background-color: #8b6cd9;
     color: #33240f;
     padding: 12px;
     border: 2px solid #8c672c;
@@ -65,4 +65,23 @@ body {
   padding: 16px;
   background-color: #fffbe8;
   border: 2px solid #8a7a5c;
+}
+
+#window {
+    background-color: #a9c9d4;
+    padding: 12px;
+    border: 5px solid #393b3d;
+    border-radius: 5px;
+}
+
+.window-glass {
+    background-color: #77d4f3;
+    padding: 12px;
+}
+
+.window-blind {
+    height: 4px;
+    background-color: #110b00;
+    margin-bottom: 4px;
+    border-bottom: 2px solid #110a00;
 }
