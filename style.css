@@ -29,10 +29,35 @@ body {
     padding: 15px 40px;
     border: 10px dashed #694480;
 }
-#desk {
+#desk{
     background-color: #65452f;
     border-radius: 8px;
     box-shadow: 5px 5px 10px #888888;
+} 
+#desk {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+ .desk-lamp {
+    background-color: #356b4a;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+}
+.desk-folder {
+    background-color: #d9b86c;
+    color: #33240f;
+    padding: 12px;
+    border: 2px solid #8c672c;
+    border-radius: 5px;
+}
+.desk-nameplate {
+    background-color: #bc984e;
+    color: #2e200b;
+    padding: 8px;
+    border-radius: 4px;
 }
 
 #case-panel {
