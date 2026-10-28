@@ -85,3 +85,28 @@ body {
     margin-bottom: 4px;
     border-bottom: 2px solid #110a00;
 }
+#bookcase {
+    background-color: #65452f;
+    border: 6px solid #38291f;
+    border-radius: 5px;
+    padding: 12px;
+}
+
+.bookshelf {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    border-bottom: 10px solid #bc984e;
+    padding: 12px 4px 0;
+    margin-bottom: 12px;
+    min-height: 65px;
+}
+
+.book {
+    background-color: #20867e;
+    color: white;
+    padding: 12px 6px;
+    border: 2px solid #503363;
+    border-radius: 3px 3px 0 0;
+    font-size: 13px;
+}
