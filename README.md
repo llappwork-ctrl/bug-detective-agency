@@ -22,6 +22,8 @@ Rather than simply following tutorials, I'm learning by experimenting with code,
 
 **Status: Early interactive prototype**
 
+🎮 [Play The Bug Detective Agency](https://llappwork-ctrl.github.io/bug-detective-agency/)
+
 The current version includes:
 
 - A detective's office built with HTML and CSS
