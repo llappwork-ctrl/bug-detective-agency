@@ -46,6 +46,14 @@ body {
     padding: 12px;
     border-radius: 8px;
 }
+.desk-lamp {
+    cursor: pointer;
+}
+
+.desk-lamp.lamp-on {
+    background-color: #3e9662;
+    box-shadow: 0 0 18px 6px #ffe28a;
+}
 .desk-folder {
     background-color: #8b6cd9;
     color: #33240f;

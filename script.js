@@ -39,3 +39,15 @@ if (begoniaBook && mabelDialogue) {
         }
     });
 }
+// Mario's Lamp — click to turn on or off
+const marioLamp = document.getElementById("mario-lamp");
+
+if (marioLamp) {
+    marioLamp.addEventListener("click", function () {
+        marioLamp.classList.toggle("lamp-on");
+
+        const isOn = marioLamp.classList.contains("lamp-on");
+
+        marioLamp.setAttribute("aria-pressed", String(isOn));
+    });
+}
