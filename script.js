@@ -25,20 +25,37 @@ const mabelDialogue = document.getElementById("mabel-dialogue");
 if (begoniaBook && mabelDialogue) {
     begoniaBook.setAttribute("aria-controls", "mabel-dialogue");
     begoniaBook.setAttribute("aria-expanded", "false");
+    
+    let begoniaClueFound =
+    localStorage.getItem("begoniaClueFound") === "true";
 
     begoniaBook.addEventListener("click", function () {
+        
         mabelDialogue.hidden = !mabelDialogue.hidden;
 
         const isOpen = !mabelDialogue.hidden;
 
         begoniaBook.setAttribute("aria-expanded", String(isOpen));
-
+    
         if (isOpen) {
             mabelDialogue.textContent =
                 "The flowers are innocent, Detective. It's what's hiding inside them that confounds me.";
-        }
-    });
-}
+            
+                if(!begoniaClueFound) {
+                begoniaClueFound = true;
+                localStorage.setItem("begoniaClueFound", "true");
+                
+                const chaise = document.getElementById("chaise");
+            
+                if (chaise) {
+                    chaise.classList.add("chaise-shifted");
+                }
+            
+                 console.log("Clue discovered: Suspicious Begonia");
+        } // Closes the first-discovery condition
+    }     // Closes if (isOpen)
+    });   // Closes the click listener
+}         // Closes if (begoniaBook && mabelDialogue)
 // Mario's Lamp — click to turn on or off
 const marioLamp = document.getElementById("mario-lamp");
 

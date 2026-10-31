@@ -29,7 +29,7 @@ body {
     padding: 15px 40px;
     border: 10px dashed #694480;
 }
-#desk{
+#desk{ 
     background-color: #65452f;
     border-radius: 8px;
     box-shadow: 5px 5px 10px #888888;
@@ -117,4 +117,8 @@ body {
     border: 2px solid #503363;
     border-radius: 3px 3px 0 0;
     font-size: 13px;
+}
+#chaise.chaise-shifted {
+    transform: rotate(-2deg) translateX(8px);
+    transition: transform 0.5s ease;
 }
