@@ -3,41 +3,86 @@ body {
   background-color: #f3ead8;
 }
 
+/* THE SCENE
+   #office is the stage: a 16:9 box with the illustrated room as its background.
+   position: relative makes it the parent container that the furniture below
+   measures its percentages against. */
 #office {
-  display: flex;
-  gap: 20px;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+
+    background-image: url("images/backgrounds/Sunlit Warm Wooden Study with Centered Window.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
+/* The two old columns are now invisible layers that each cover the whole scene,
+   so the furniture inside them is placed relative to the scene.
+   pointer-events: none lets clicks fall through to whatever is underneath;
+   the furniture turns clicks back on for itself. */
 #left-side,
 #right-side {
-  flex: 1;
-  padding: 16px;
-  border: 2px dashed #8a7a5c;
+    position: absolute;
+    inset: 0;
+    padding: 0;
+    border: none;
+    pointer-events: none;
 }
 
-#window,
-#bookcase,
-#chaise,
-#desk {
-  margin-bottom: 12px;
-  padding: 16px;
-  background-color: #b5d6e0;
+#left-side {
+    z-index: 2;
 }
+
+#right-side {
+    z-index: 1;
+}
+
+/* Mabel's chaise: left foreground, feet resting on the rug.
+   left = distance from the scene's left edge; top = distance from its top edge;
+   width = how wide it is (height follows automatically from the picture). */
 #chaise {
-    background-color: #b69acb;
-    border-radius: 20px;
-    padding: 15px 40px;
-    border: 10px dashed #694480;
+    position: absolute;
+    left: 3%;
+    top: 52%;
+    width: 36%;
+    z-index: 2;
+    background: transparent;
+    padding: 0;
+    border: none;
+    margin: 0;
+    pointer-events: none;
 }
-#desk{ 
+
+#chaise img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Temporary desk: against the right wall, standing on the floor.
+   top starts at desktop height; min-height stretches the box down toward the floor
+   so it reads as a desk body instead of a floating strip. */
+#desk {
+    position: absolute;
+    left: 53%;
+    top: 54%;
+    width: 42%;
+    min-height: 24%;
+    box-sizing: border-box;
+    pointer-events: auto;
+
+    padding: 16px;
     background-color: #65452f;
     border-radius: 8px;
     box-shadow: 5px 5px 10px #888888;
-} 
-#desk {
+
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    align-content: flex-start;
     gap: 12px;
 }
  .desk-lamp {
@@ -75,7 +120,10 @@ body {
   border: 2px solid #8a7a5c;
 }
 
+/* Our illustrated background already has a window,
+   so the old HTML placeholder window stays hidden. */
 #window {
+    display: none;
     background-color: #a9c9d4;
     padding: 12px;
     border: 5px solid #393b3d;
@@ -93,7 +141,18 @@ body {
     margin-bottom: 4px;
     border-bottom: 2px solid #110a00;
 }
+
+/* Temporary bookcase position: against the left wall, just below the window.
+   The window's sill sits at about 46% of the scene's height, so top stays below that. */
 #bookcase {
+    position: absolute;
+    left: 13.5%;
+    top: 47.5%;
+    width: 35%;
+    z-index: 1;
+    box-sizing: border-box;
+    pointer-events: auto;
+
     background-color: #65452f;
     border: 6px solid #38291f;
     border-radius: 5px;
@@ -107,7 +166,7 @@ body {
     border-bottom: 10px solid #bc984e;
     padding: 12px 4px 0;
     margin-bottom: 12px;
-    min-height: 65px;
+    min-height: 45px;
 }
 
 .book {
@@ -118,7 +177,34 @@ body {
     border-radius: 3px 3px 0 0;
     font-size: 13px;
 }
+/* After the first clue: the chaise turns so its foot end (right) lifts and slides
+   toward the left corner of the desk. Percent in translateX is a share of the chaise's own width. */
 #chaise.chaise-shifted {
-    transform: rotate(-2deg) translateX(8px);
+    transform: rotate(-4deg) translateX(2%);
     transition: transform 0.5s ease;
+}
+
+/* Mabel's dialogue line.
+   Her words stay above the furnishings and never block clicks.
+   Placed on the open floor between the chaise and the desk so it covers no furniture.
+   The soft dark backing keeps the pink text readable over the light rug. */
+#mabel-dialogue {
+    position: absolute;
+    left: 38%;
+    top: 82%;
+    width: 40%;
+    z-index: 3;
+    pointer-events: none;
+
+    margin: 0;
+    padding: 6px 12px;
+    background-color: rgba(35, 18, 40, 0.72);
+    border-radius: 8px;
+    font-style: italic;
+    color: #e9b4d8;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75);
+}
+
+#mabel {
+    display: none;
 }

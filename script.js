@@ -29,6 +29,15 @@ if (begoniaBook && mabelDialogue) {
     let begoniaClueFound =
     localStorage.getItem("begoniaClueFound") === "true";
 
+    // Saved progress: put Mabel's chaise back where the clue left it.
+    if (begoniaClueFound) {
+        const savedChaise = document.getElementById("chaise");
+
+        if (savedChaise) {
+            savedChaise.classList.add("chaise-shifted");
+        }
+    }
+
     begoniaBook.addEventListener("click", function () {
         
         mabelDialogue.hidden = !mabelDialogue.hidden;
