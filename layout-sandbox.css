@@ -1,0 +1,266 @@
+/* Styles for the layout sandbox only. The real game's style.css is not used here. */
+
+body {
+  font-family: sans-serif;
+  background-color: #f3ead8;
+  margin: 0;
+  padding: 12px 16px 24px;
+  color: #2e200b;
+}
+
+.top h1 {
+  margin: 4px 0;
+  font-size: 1.4rem;
+}
+
+.note {
+  margin: 0 0 12px;
+  max-width: 70ch;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+
+/* THE STAGE: the same recipe as #office in the real game. */
+.stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: #1d1410;
+  background-image: url("images/backgrounds/Sunlit Warm Wooden Study with Centered Window.png");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  touch-action: none;
+  user-select: none;
+  border-radius: 4px;
+}
+
+.stage:focus-visible {
+  outline: 3px solid #6a3d8f;
+  outline-offset: 2px;
+}
+
+/* An item is a transparent box. Its left / top / width are set by script.js. */
+.item {
+  position: absolute;
+  pointer-events: none;
+}
+
+.item img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Only the .hit area catches the mouse, so transparent edges don't grab clicks. */
+.item .hit {
+  position: absolute;
+  inset: var(--hit, 0);
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.stage.dragging .hit {
+  cursor: grabbing;
+}
+
+/* Chaise previews. Two different elements carry the two effects, so neither
+   transform can overwrite the other:
+   - .flipped mirrors the PICTURE inside the box
+   - .shifted rotates / slides the BOX (same recipe as #chaise.chaise-shifted in the real game) */
+.item.flipped img {
+  transform: scaleX(-1);
+}
+
+.item.shifted {
+  transform: rotate(var(--shift-rot, -4deg)) translateX(var(--shift-x, 2%));
+  transition: transform 0.5s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item.shifted {
+    transition: none;
+  }
+}
+
+.tag {
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #6b5a3a;
+  background-color: #f1e7cf;
+  border-radius: 10px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.small {
+  margin: 4px 0 8px;
+  font-size: 0.78rem;
+  color: #4a3b22;
+}
+
+.art-info {
+  margin: 0 0 6px;
+  word-break: break-word;
+}
+
+.check-note {
+  margin: 0 0 8px;
+  padding: 6px 8px;
+  font-size: 0.78rem;
+  background-color: #fff3c4;
+  border: 1px solid #d8b845;
+  border-radius: 4px;
+}
+
+.warning {
+  margin: 8px 0;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  background-color: #ffe3d6;
+  border: 1px solid #d9774a;
+  border-radius: 4px;
+}
+
+.previews {
+  border: 1px solid #c9b78f;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+.previews h2 {
+  margin-top: 0;
+}
+
+.previews .option {
+  margin: 2px 0;
+}
+
+.shift-fields {
+  margin-top: 4px;
+}
+
+.item.selected {
+  outline: 2px dashed #ffffff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.6);
+}
+
+.stage.show-boxes .item {
+  outline: 1px dashed rgba(255, 255, 255, 0.85);
+}
+
+.stage.show-boxes .item.selected {
+  outline: 2px dashed #ffffff;
+}
+
+.stage.show-boxes .hit {
+  outline: 1px dotted rgba(255, 230, 120, 0.9);
+}
+
+/* The control panel. */
+.panel {
+  background-color: #fffbe8;
+  border: 2px solid #8a7a5c;
+  border-radius: 6px;
+  padding: 12px;
+}
+
+.help {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+}
+
+.card {
+  border: 1px solid #c9b78f;
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+.card.active {
+  border-color: #6a3d8f;
+  box-shadow: 0 0 0 2px #cdb4e0;
+}
+
+.card h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin-bottom: 6px;
+}
+
+.fields label {
+  font-size: 0.85rem;
+}
+
+.fields input[type="number"] {
+  width: 4.5em;
+}
+
+.card input[type="range"] {
+  width: 100%;
+}
+
+.layer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+.option {
+  display: block;
+  margin: 4px 0 10px;
+  font-size: 0.85rem;
+}
+
+.panel h2 {
+  margin: 8px 0 6px;
+  font-size: 1rem;
+}
+
+#readout {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+#status {
+  font-size: 0.85rem;
+  color: #3b6b3b;
+}
+
+button {
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

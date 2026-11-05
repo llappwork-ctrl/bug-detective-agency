@@ -45,8 +45,8 @@ body {
    width = how wide it is (height follows automatically from the picture). */
 #chaise {
     position: absolute;
-    left: 3%;
-    top: 52%;
+    left: 57.1%;
+    top: 44.9%;
     width: 36%;
     z-index: 2;
     background: transparent;
@@ -60,38 +60,67 @@ body {
     width: 100%;
     height: auto;
     display: block;
+    transform: scaleX(-1);
 }
 
-/* Temporary desk: against the right wall, standing on the floor.
-   top starts at desktop height; min-height stretches the box down toward the floor
-   so it reads as a desk body instead of a floating strip. */
+/* Illustrated desk, on the left. The picture is the desk's background; the box is the
+   same 3:2 shape as the picture (1536 x 1024), so left / top / width place the picture
+   exactly as in the layout sandbox. The box itself ignores the mouse; only the buttons
+   placed on it (below) are clickable. container-type lets the little labels scale with
+   the desk (cqw = 1% of the desk's width). */
 #desk {
     position: absolute;
-    left: 53%;
-    top: 54%;
-    width: 42%;
-    min-height: 24%;
+    left: 17.8%;
+    top: 46%;
+    width: 36.7%;
+    aspect-ratio: 3 / 2;
+    z-index: 2;
     box-sizing: border-box;
-    pointer-events: auto;
+    pointer-events: none;
+    container-type: inline-size;
 
-    padding: 16px;
-    background-color: #65452f;
-    border-radius: 8px;
-    box-shadow: 5px 5px 10px #888888;
-
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    align-content: flex-start;
-    gap: 12px;
+    background-image: url("images/objects/Luxurious Mahogany Mushroom Emblem Desk.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
 }
- .desk-lamp {
+
+/* Decorative chair: behind the desk (z-index 1 vs the desk's 2), never clickable.
+   Same left / top / width as the sandbox; height follows the picture. */
+#chair {
+    position: absolute;
+    left: 13.6%;
+    top: 36.2%;
+    width: 20%;
+    height: auto;
+    z-index: 1;
+    display: block;
+    pointer-events: none;
+}
+
+/* The four desk items sit on the desk, placed by percent of the desk's own box.
+   Each one turns the mouse back on for itself. */
+.desk-lamp,
+.desk-folder,
+.desk-nameplate,
+#case-file-button {
+    position: absolute;
+    box-sizing: border-box;
+    margin: 0;
+    font-family: inherit;
+    font-size: clamp(0.7rem, 2.6cqw, 1.05rem);
+    line-height: 1.15;
+    text-align: center;
+    pointer-events: auto;
+}
+
+.desk-lamp {
+    left: 12%;
+    top: 14%;
+    width: 22%;
     background-color: #356b4a;
     color: white;
-    padding: 12px;
+    padding: 0.4em 0.5em;
     border-radius: 8px;
-}
-.desk-lamp {
     cursor: pointer;
 }
 
@@ -100,17 +129,30 @@ body {
     box-shadow: 0 0 18px 6px #ffe28a;
 }
 .desk-folder {
+    left: 64%;
+    top: 14%;
+    width: 28%;
     background-color: #8b6cd9;
     color: #33240f;
-    padding: 12px;
+    padding: 0.4em 0.5em;
     border: 2px solid #8c672c;
     border-radius: 5px;
 }
 .desk-nameplate {
+    left: 38%;
+    top: 62%;
+    width: 40%;
     background-color: #bc984e;
     color: #2e200b;
-    padding: 8px;
+    padding: 0.3em 0.4em;
     border-radius: 4px;
+}
+#case-file-button {
+    left: 37%;
+    top: 14%;
+    width: 24%;
+    padding: 0.4em 0.5em;
+    cursor: pointer;
 }
 
 #case-panel {
@@ -142,45 +184,85 @@ body {
     border-bottom: 2px solid #110a00;
 }
 
-/* Temporary bookcase position: against the left wall, just below the window.
-   The window's sill sits at about 46% of the scene's height, so top stays below that. */
+/* Bookcase: against the right wall, clear of the window.
+   Chosen in the layout sandbox (left / top / width = percent of the scene). */
 #bookcase {
     position: absolute;
-    left: 13.5%;
-    top: 47.5%;
-    width: 35%;
+    left: 60%;
+    top: 14.2%;
+    width: 30%;
     z-index: 1;
     box-sizing: border-box;
+    pointer-events: none;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+.bookcase-art {
+    display: block;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+}
+
+#begonia-book {
+    position: absolute;
+    /* The "Suspicious Begonias" book on the new bookcase picture: measured at
+       x 305-682, y 827-899 px of the 1122 x 1402 image, as percent of the bookcase box. */
+    left: 27.2%;
+    top: 59%;
+    width: 33.6%;
+    height: 5.1%;
+
+    box-sizing: border-box;
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
     pointer-events: auto;
 
-    background-color: #65452f;
-    border: 6px solid #38291f;
-    border-radius: 5px;
-    padding: 12px;
+    /* Hitbox shape: clip-path cuts away the lower-right corner, where the chaise's
+       sloped back is drawn in front of the book. Clipped-away parts take no clicks,
+       so tapping the upholstery there does nothing. The cut is a share of the button's
+       own box, so it scales with the bookcase. */
+    clip-path: polygon(0 0, 76% 0, 50% 100%, 0 100%);
+
+    /* Golden edge light, kept OFF the lettering. Three thin gradients hug the top edge,
+       the bottom edge and the left spine, each fading to clear within a few percent of
+       the button's size. The middle of the book, where the gold title sits, gets no
+       tint at all. Percentages are shares of the button's own box, so this scales with
+       the bookcase. (A box-shadow glow would be clipped away by the clip-path.) */
+    background:
+        linear-gradient(to bottom, rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 14%),
+        linear-gradient(to top,    rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 14%),
+        linear-gradient(to right,  rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 7%);
 }
 
-.bookshelf {
-    display: flex;
-    align-items: flex-end;
-    gap: 8px;
-    border-bottom: 10px solid #bc984e;
-    padding: 12px 4px 0;
-    margin-bottom: 12px;
-    min-height: 45px;
+/* Hover: the same edge light, a little brighter and a little deeper, still short of the words. */
+#begonia-book:hover {
+    background:
+        linear-gradient(to bottom, rgba(255, 230, 120, 0.90) 0%, rgba(255, 215, 80, 0) 18%),
+        linear-gradient(to top,    rgba(255, 230, 120, 0.90) 0%, rgba(255, 215, 80, 0) 18%),
+        linear-gradient(to right,  rgba(255, 230, 120, 0.90) 0%, rgba(255, 215, 80, 0) 9%);
 }
 
-.book {
-    background-color: #20867e;
-    color: white;
-    padding: 12px 6px;
-    border: 2px solid #503363;
-    border-radius: 3px 3px 0 0;
-    font-size: 13px;
+/* Keyboard focus: an outline would be clipped by the clip-path, so while the button
+   has keyboard focus the clip is lifted and a two-tone ring (light gold + dark brown)
+   is drawn, readable on both pale and dark wood. */
+#begonia-book:focus-visible {
+    clip-path: none;
+    outline: 3px solid #ffe28a;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #3b2400;
 }
 /* After the first clue: the chaise turns so its foot end (right) lifts and slides
    toward the left corner of the desk. Percent in translateX is a share of the chaise's own width. */
 #chaise.chaise-shifted {
-    transform: rotate(-4deg) translateX(2%);
+    transform: rotate(-3deg) translateX(15%);
     transition: transform 0.5s ease;
 }
 
