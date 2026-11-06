@@ -13,7 +13,7 @@ body {
     aspect-ratio: 16 / 9;
     overflow: hidden;
 
-    background-image: url("images/backgrounds/Sunlit Warm Wooden Study with Centered Window.png");
+    background-image: url("images/backgrounds/Cozy Bug Detective Agency Office.png");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -40,14 +40,16 @@ body {
     z-index: 1;
 }
 
-/* Mabel's chaise: left foreground, feet resting on the rug.
-   left = distance from the scene's left edge; top = distance from its top edge;
-   width = how wide it is (height follows automatically from the picture). */
+/* Mabel's chaise, on the rug, in front of everything on the right-hand layer.
+   Approved in the layout sandbox: left / top / width are percent of the scene.
+   (In the sandbox the chaise was layer 5 of 5. Here it lives in #left-side, which always
+   sits in front of #right-side, so it is above the chair, flower lamp, desk and mushroom
+   lamp automatically.) The flip is OFF, so the picture is drawn as it was painted. */
 #chaise {
     position: absolute;
-    left: 57.1%;
-    top: 44.9%;
-    width: 36%;
+    left: 57.8%;
+    top: 39.3%;
+    width: 30%;
     z-index: 2;
     background: transparent;
     padding: 0;
@@ -60,99 +62,140 @@ body {
     width: 100%;
     height: auto;
     display: block;
-    transform: scaleX(-1);
 }
 
-/* Illustrated desk, on the left. The picture is the desk's background; the box is the
-   same 3:2 shape as the picture (1536 x 1024), so left / top / width place the picture
-   exactly as in the layout sandbox. The box itself ignores the mouse; only the buttons
-   placed on it (below) are clickable. container-type lets the little labels scale with
-   the desk (cqw = 1% of the desk's width). */
+/* THE RIGHT-HAND LAYER (#right-side)
+   Five pieces, back to front, using the sandbox's approved order:
+   chair (1) -> flower lamp (2) -> desk (3) -> mushroom lamp (4).
+   All of them sit behind the chaise, which is in #left-side. */
+
+/* Illustrated desk. The picture is the desk's background; the box is the same 4:3 shape
+   as the picture (1448 x 1086), so left / top / width place it exactly as in the layout
+   sandbox. The box itself ignores the mouse; only the Case File button on it is clickable. */
 #desk {
     position: absolute;
-    left: 17.8%;
-    top: 46%;
-    width: 36.7%;
-    aspect-ratio: 3 / 2;
-    z-index: 2;
+    left: 14%;
+    top: 35.1%;
+    width: 37.3%;
+    aspect-ratio: 1448 / 1086;
+    z-index: 3;
     box-sizing: border-box;
     pointer-events: none;
-    container-type: inline-size;
 
-    background-image: url("images/objects/Luxurious Mahogany Mushroom Emblem Desk.png");
+    background-image: url("images/objects/Mabel Quibble\2019s Enchanted Detective Desk.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
-/* Decorative chair: behind the desk (z-index 1 vs the desk's 2), never clickable.
-   Same left / top / width as the sandbox; height follows the picture. */
+/* Decorative chair: behind the desk (z-index 1 vs the desk's 3), never clickable. */
 #chair {
     position: absolute;
-    left: 13.6%;
-    top: 36.2%;
-    width: 20%;
+    left: 24.4%;
+    top: 26.6%;
+    width: 17%;
     height: auto;
     z-index: 1;
     display: block;
     pointer-events: none;
 }
 
-/* The four desk items sit on the desk, placed by percent of the desk's own box.
-   Each one turns the mouse back on for itself. */
-.desk-lamp,
-.desk-folder,
-.desk-nameplate,
-#case-file-button {
+/* Decorative orange flower floor lamp: behind the desk and behind the chaise, never
+   clickable. Its flower head arches over the seating area. */
+#flower-lamp {
+    position: absolute;
+    left: 62.9%;
+    top: 17.1%;
+    width: 19.7%;
+    height: auto;
+    z-index: 2;
+    
+    pointer-events: none;
+}
+
+/* Mario's mushroom lamp, standing on the desktop (in front of the desk). The box ignores
+   the mouse; only the invisible button over the lamp itself is clickable. The box is the
+   same shape as the picture (245 x 308). */
+#mushroom-lamp {
+    position: absolute;
+    left: 41.4%;
+    top: 37.2%;
+    width: 7.5%;
+    z-index: 4;
+    pointer-events: none;
+}
+
+#mushroom-lamp img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: filter 0.25s ease;
+}
+
+/* "On" look for the lamp: the painted lamp is always drawn lit, so turning it on adds a
+   soft golden halo around the lamp's own outline (a drop-shadow follows the picture's shape,
+   so there is no rectangle). :has() lets the picture react when the button gets .lamp-on. */
+#mushroom-lamp:has(.lamp-on) img {
+    filter: drop-shadow(0 0 8px rgba(255, 226, 138, 0.95)) drop-shadow(0 0 18px rgba(255, 200, 90, 0.55));
+}
+
+/* The two clickable things are real buttons laid invisibly over the painted art.
+   Their words are still there for screen readers (and script.js still swaps the Case File
+   label); color: transparent just stops the words from being drawn on top of the picture. */
+#case-file-button,
+#mario-lamp {
     position: absolute;
     box-sizing: border-box;
+    appearance: none;
     margin: 0;
-    font-family: inherit;
-    font-size: clamp(0.7rem, 2.6cqw, 1.05rem);
-    line-height: 1.15;
-    text-align: center;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: transparent;
+    font-size: 1rem;
+    overflow: hidden;
+    cursor: pointer;
     pointer-events: auto;
 }
 
-.desk-lamp {
-    left: 12%;
-    top: 14%;
-    width: 22%;
-    background-color: #356b4a;
-    color: white;
-    padding: 0.4em 0.5em;
-    border-radius: 8px;
-    cursor: pointer;
+/* Case File: over the painted book on the desk (measured on the 1448 x 1086 desk picture,
+   as percent of the desk box). */
+#case-file-button {
+    left: 27%;
+    top: 12%;
+    width: 23%;
+    height: 20%;
 }
 
-.desk-lamp.lamp-on {
-    background-color: #3e9662;
-    box-shadow: 0 0 18px 6px #ffe28a;
+/* Mario's lamp button: over the lamp itself, inside the lamp's box. The four numbers are
+   the lamp picture's transparent margins (top right bottom left). */
+#mario-lamp {
+    inset: 0.3% 0.4% 0.6% 0.8%;
 }
-.desk-folder {
-    left: 64%;
-    top: 14%;
-    width: 28%;
-    background-color: #8b6cd9;
-    color: #33240f;
-    padding: 0.4em 0.5em;
-    border: 2px solid #8c672c;
-    border-radius: 5px;
+
+/* Visible keyboard focus for both: a two-tone ring (light gold + dark brown) that reads on
+   dark wood and on the lit lamp. Same recipe as the Suspicious Begonias button. */
+#case-file-button:focus-visible,
+#mario-lamp:focus-visible {
+    outline: 3px solid #ffe28a;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 2px #3b2400;
 }
+
+/* The folder label and the nameplate are painted on the new desk (the nameplate reads
+   "Mabel Quibble, Director of Emotional Chaos"), so the HTML versions are no longer drawn.
+   Their words stay in the page for screen readers. */
+.desk-folder,
 .desk-nameplate {
-    left: 38%;
-    top: 62%;
-    width: 40%;
-    background-color: #bc984e;
-    color: #2e200b;
-    padding: 0.3em 0.4em;
-    border-radius: 4px;
-}
-#case-file-button {
-    left: 37%;
-    top: 14%;
-    width: 24%;
-    padding: 0.4em 0.5em;
-    cursor: pointer;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
 }
 
 #case-panel {
@@ -184,37 +227,26 @@ body {
     border-bottom: 2px solid #110a00;
 }
 
-/* Bookcase: against the right wall, clear of the window.
-   Chosen in the layout sandbox (left / top / width = percent of the scene). */
+/* The bookshelves are painted into the background, so there is no bookcase picture any more.
+   #bookcase is now just an invisible layer that covers the whole scene, so the Begonias
+   button below can be placed in percent of the scene. It never takes clicks itself. */
 #bookcase {
     position: absolute;
-    left: 60%;
-    top: 14.2%;
-    width: 30%;
+    inset: 0;
     z-index: 1;
-    box-sizing: border-box;
-    pointer-events: none;
-
-    background: transparent;
-    border: none;
-    border-radius: 0;
-    padding: 0;
-}
-.bookcase-art {
-    display: block;
-    width: 100%;
-    height: auto;
     pointer-events: none;
 }
 
 #begonia-book {
     position: absolute;
-    /* The "Suspicious Begonias" book on the new bookcase picture: measured at
-       x 305-682, y 827-899 px of the 1122 x 1402 image, as percent of the bookcase box. */
-    left: 27.2%;
-    top: 59%;
-    width: 33.6%;
-    height: 5.1%;
+    /* The "Suspicious Begonias" book painted on the shelf: measured at x 862-1040, y 328-359
+       px of the 1670 x 941 background, converted to percent of the scene. (The background is
+       drawn with "contain", so it is 0.17% narrower than the scene and centred; that is
+       included in the left value.) */
+    left: 51.6%;
+    top: 34.9%;
+    width: 10.6%;
+    height: 3.3%;
 
     box-sizing: border-box;
     appearance: none;
@@ -225,17 +257,13 @@ body {
     cursor: pointer;
     pointer-events: auto;
 
-    /* Hitbox shape: clip-path cuts away the lower-right corner, where the chaise's
-       sloped back is drawn in front of the book. Clipped-away parts take no clicks,
-       so tapping the upholstery there does nothing. The cut is a share of the button's
-       own box, so it scales with the bookcase. */
-    clip-path: polygon(0 0, 76% 0, 50% 100%, 0 100%);
+    /* The old clipped corner is gone: in the approved layout the chaise starts below the
+       book, so nothing is drawn in front of it any more and the whole book can be clicked. */
 
     /* Golden edge light, kept OFF the lettering. Three thin gradients hug the top edge,
        the bottom edge and the left spine, each fading to clear within a few percent of
        the button's size. The middle of the book, where the gold title sits, gets no
-       tint at all. Percentages are shares of the button's own box, so this scales with
-       the bookcase. (A box-shadow glow would be clipped away by the clip-path.) */
+       tint at all. Percentages are shares of the button's own box. */
     background:
         linear-gradient(to bottom, rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 14%),
         linear-gradient(to top,    rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 14%),
@@ -250,19 +278,18 @@ body {
         linear-gradient(to right,  rgba(255, 230, 120, 0.90) 0%, rgba(255, 215, 80, 0) 9%);
 }
 
-/* Keyboard focus: an outline would be clipped by the clip-path, so while the button
-   has keyboard focus the clip is lifted and a two-tone ring (light gold + dark brown)
-   is drawn, readable on both pale and dark wood. */
+/* Keyboard focus: a two-tone ring (light gold + dark brown), readable on both pale and
+   dark wood. */
 #begonia-book:focus-visible {
-    clip-path: none;
     outline: 3px solid #ffe28a;
     outline-offset: 2px;
     box-shadow: 0 0 0 2px #3b2400;
 }
-/* After the first clue: the chaise turns so its foot end (right) lifts and slides
-   toward the left corner of the desk. Percent in translateX is a share of the chaise's own width. */
+
+/* After the first clue: the chaise slides to the right (approved in the layout sandbox).
+   Percent in translateX is a share of the chaise's own width. */
 #chaise.chaise-shifted {
-    transform: rotate(-3deg) translateX(15%);
+    transform: rotate(0deg) translateX(20%);
     transition: transform 0.5s ease;
 }
 

@@ -33,6 +33,36 @@
         Use the boxes and sliders below for exact numbers.
       </p>
 
+      <section class="previews scene-picker">
+        <h2>Scene <span class="tag">each has its own saved arrangement</span></h2>
+        <label class="option">
+          Arrangement
+          <select id="scene-select">
+            <option value="whimsical">Whimsical office (new furniture)</option>
+            <option value="sunlit">Earlier Sunlit office (your saved v2 arrangement)</option>
+          </select>
+        </label>
+        <label class="option">
+          Background
+          <select id="background-select">
+            <option value="cozy">Whimsical office (Cozy Bug Detective Agency Office)</option>
+            <option value="sunlit">Sunlit window (the original, for comparison)</option>
+          </select>
+        </label>
+        <p class="small">
+          Switching never copies, merges or deletes a saved arrangement.
+          The background is just a backdrop, so you can try either one behind either set of furniture.
+        </p>
+      </section>
+
+      <section class="previews" id="scene-states" hidden>
+        <h2>Scene states <span class="tag">sandbox only</span></h2>
+        <div id="scene-states-list"></div>
+        <p class="small">
+          Hiding a lamp only hides it in this preview. Its position and layer are kept.
+        </p>
+      </section>
+
       <div id="cards"></div>
 
       <section class="previews">
@@ -49,19 +79,15 @@
           <label>rotate <input type="number" step="0.5" id="shift-rot"> deg</label>
           <label>slide <input type="number" step="0.5" id="shift-x"> %</label>
         </div>
-        <p class="small">
-          The shift starts with the real game's numbers (rotate -4 deg, slide 2%).
-          Flipping only mirrors the picture inside the box, and the shift moves the box,
-          so the two never cancel each other.
-        </p>
+        <p class="small" id="shift-note"></p>
       </section>
 
       <div id="layer-warning" class="warning" role="status" hidden></div>
       <p class="small">
-        <strong>About layers:</strong> here you can stack all four objects in any order.
-        In the real game the bookcase and chaise live in <code>#left-side</code> and the desk lives in
-        <code>#right-side</code>, and the whole left side always sits in front of the whole right side.
-        Each card shows which group an object belongs to.
+        <strong>About layers:</strong> here you can stack all the objects in any order.
+        In the real game each piece lives in either <code>#left-side</code> or <code>#right-side</code>,
+        and the whole left side always sits in front of the whole right side.
+        Each card shows which group an object belongs to (or is proposed for, if it isn't in the real game yet).
       </p>
 
       <label class="option">

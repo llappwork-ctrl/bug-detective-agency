@@ -2,58 +2,125 @@
 // This file only controls layout-sandbox.html. It never touches the real game
 // (index.html, style.css, script.js) or the real game's saved progress.
 
-// ---- The furniture list -------------------------------------------------------
-// To swap in new artwork later, change that object's `art` file name (and, if the
-// picture has different transparent margins, its `hit` box). Everything else on the
-// page is built from this list.
-//   group : which parent the piece lives in in the REAL game (for the layer warning)
-//   hit   : top right bottom left of the visible part, as % of the picture. Only that
-//           part catches the mouse, so transparent edges don't grab clicks.
-//           (Measured from each PNG's transparency on 4 Nov 2026.)
+// ---- Two scenes, two saved arrangements --------------------------------------------
+// A "scene" = a furniture list + its own saved arrangement (its own storage key).
+//   whimsical : the new Whimsical Detective Study office (saved as layoutSandbox.whimsical.v1)
+//   sunlit    : your earlier arrangement with the old furniture (saved as layoutSandbox.v2).
+//               That key is exactly the one the previous sandbox used. It is only changed
+//               when YOU move something while the Sunlit scene is showing.
+// Switching scenes never copies, merges or deletes anything.
+//
+// Furniture fields:
+//   group     : which parent the piece lives in in the REAL game (for the layer warning)
+//   existing  : true if the real game already has this piece (false = proposed, not built yet)
+//   hit       : top right bottom left of the visible part, as % of the picture. Only that part
+//               catches the mouse, so transparent edges don't grab clicks.
+//               (Measured from each PNG's transparency, 6 Nov 2026 for the Whimsical pieces.)
+//   toggle    : true = this piece can be shown or hidden to preview different scene states
+//   start     : starting suggestion (left, top, width as % of the stage)
 const FOLDER = "images/objects/";
-const OBJECTS = [
-  {
-    id: "bookcase", label: "Bookcase", group: "left-side",
-    art: "Detective Bookcase of Mysteries.png",
-    oldArt: "Golden Detective Bookcase of Mysteries.png", // what v1 layouts were made with
-    hit: "16.3% 3.4% 12.8% 3.5%",
-    start: { left: 20, top: 25, width: 30 },
-  },
-  {
-    id: "chaise", label: "Chaise", group: "left-side",
-    art: "purple-chaise-transparent.png",
-    oldArt: "purple-chaise-transparent.png", // unchanged, so old values still fit
-    hit: "4.8% 1.5% 4.4% 1.5%",
-    start: { left: 3, top: 52, width: 36 },
-  },
-  {
-    id: "desk", label: "Desk", group: "right-side",
-    art: "Luxurious Mahogany Mushroom Emblem Desk.png",
-    oldArt: "(old brown placeholder box)",
-    hit: "11.1% 6.2% 13.7% 7.4%",
-    start: { left: 58, top: 48, width: 36 },
-  },
-  {
-    id: "chair", label: "Chair", group: "right-side",
-    art: "Ornate Mushroom Emblem Leather Chair - transparent.png",
-    oldArt: null, // new in this version: there is no old layout for it
-    hit: "5.4% 12.1% 5.5% 8.3%",
-    start: { left: 68, top: 30, width: 15 },
-  },
-];
 
-// Back to front. The chair starts behind the desk.
-const START_ORDER = ["chair", "desk", "bookcase", "chaise"];
+const BACKGROUNDS = {
+  cozy: {
+    label: "Whimsical office (Cozy Bug Detective Agency Office)",
+    file: "images/backgrounds/Cozy Bug Detective Agency Office.png",
+  },
+  sunlit: {
+    label: "Sunlit window (the original, for comparison)",
+    file: "images/backgrounds/Sunlit Warm Wooden Study with Centered Window.png",
+  },
+};
 
-// The real game's clue movement (style.css: #chaise.chaise-shifted), as a starting point.
-const SHIFT_START = { rot: -4, x: 2 };
+const SCENES = {
+  whimsical: {
+    label: "Whimsical office (new furniture)",
+    storageKey: "layoutSandbox.whimsical.v1",
+    legacyKey: null,
+    defaultBackground: "cozy",
+    objects: [
+      {
+        id: "desk", label: "Desk", group: "right-side", existing: true,
+        art: "Mabel Quibble’s Enchanted Detective Desk.png",
+        hit: "2.4% 0.3% 0.1% 0.9%",
+        start: { left: 12, top: 45, width: 40 },
+      },
+      {
+        id: "chair", label: "Chair", group: "right-side", existing: true,
+        art: "Whimsical_chair.png",
+        hit: "1.2% 6% 2.5% 6%",
+        start: { left: 21, top: 27, width: 17 },
+      },
+      {
+        id: "chaise", label: "Chaise", group: "left-side", existing: true,
+        art: "03_purple_chaise.png",
+        hit: "0.3% 0.2% 0.3% 0.2%",
+        start: { left: 56, top: 56, width: 30 },
+      },
+      {
+        id: "flower-lamp", label: "Flower floor lamp", group: "right-side", existing: false, toggle: true,
+        art: "04_orange_flower_floor_lamp (2).png",
+        hit: "0.2% 0.3% 0.2% 0.3%",
+        start: { left: 59, top: 17, width: 17 },
+      },
+      {
+        id: "mushroom-lamp", label: "Mushroom desk lamp", group: "right-side", existing: false, toggle: true,
+        art: "06_mario_green_mushroom_lamp.png",
+        hit: "0.3% 0.4% 0.6% 0.8%",
+        start: { left: 37.5, top: 45, width: 7.5 },
+      },
+    ],
+    // Back to front: chair behind desk, flower lamp behind chaise, mushroom lamp on the desk.
+    startOrder: ["chair", "flower-lamp", "desk", "mushroom-lamp", "chaise"],
+    selected: "chaise",
+    // Starting point = the real game's current clue movement (style.css: #chaise.chaise-shifted).
+    shiftStart: { rot: -3, x: 15 },
+  },
 
-const STORAGE_KEY = "layoutSandbox.v2";
-const OLD_STORAGE_KEY = "layoutSandbox.v1"; // read for migration, NEVER changed or deleted
+  sunlit: {
+    label: "Earlier Sunlit office (your saved v2 arrangement)",
+    storageKey: "layoutSandbox.v2",
+    legacyKey: "layoutSandbox.v1", // read for migration, NEVER changed or deleted
+    defaultBackground: "sunlit",
+    objects: [
+      {
+        id: "bookcase", label: "Bookcase", group: "left-side", existing: true,
+        art: "Detective Bookcase of Mysteries.png",
+        oldArt: "Golden Detective Bookcase of Mysteries.png", // what v1 layouts were made with
+        hit: "16.3% 3.4% 12.8% 3.5%",
+        start: { left: 20, top: 25, width: 30 },
+      },
+      {
+        id: "chaise", label: "Chaise", group: "left-side", existing: true,
+        art: "purple-chaise-transparent.png",
+        oldArt: "purple-chaise-transparent.png", // unchanged, so old values still fit
+        hit: "4.8% 1.5% 4.4% 1.5%",
+        start: { left: 3, top: 52, width: 36 },
+      },
+      {
+        id: "desk", label: "Desk", group: "right-side", existing: true,
+        art: "Luxurious Mahogany Mushroom Emblem Desk.png",
+        oldArt: "(old brown placeholder box)",
+        hit: "11.1% 6.2% 13.7% 7.4%",
+        start: { left: 58, top: 48, width: 36 },
+      },
+      {
+        id: "chair", label: "Chair", group: "right-side", existing: true,
+        art: "Ornate Mushroom Emblem Leather Chair - transparent.png",
+        oldArt: null, // new in v2: there is no v1 layout for it
+        hit: "5.4% 12.1% 5.5% 8.3%",
+        start: { left: 68, top: 30, width: 15 },
+      },
+    ],
+    startOrder: ["chair", "desk", "bookcase", "chaise"],
+    selected: "chaise",
+    shiftStart: { rot: -4, x: 2 },
+  },
+};
 
-const IDS = OBJECTS.map(function (o) { return o.id; });
-const BY_ID = {};
-OBJECTS.forEach(function (o) { BY_ID[o.id] = o; });
+const SCENE_ORDER = ["whimsical", "sunlit"];
+
+// Which scene and background were showing last (separate key; never touches an arrangement).
+const UI_KEY = "layoutSandbox.ui.v1";
 
 const stage = document.getElementById("stage");
 const readout = document.getElementById("readout");
@@ -63,37 +130,14 @@ const flipBox = document.getElementById("flip-chaise");
 const shiftBox = document.getElementById("shift-preview");
 const shiftRotInput = document.getElementById("shift-rot");
 const shiftXInput = document.getElementById("shift-x");
+const shiftNote = document.getElementById("shift-note");
 const layerWarning = document.getElementById("layer-warning");
+const sceneSelect = document.getElementById("scene-select");
+const backgroundSelect = document.getElementById("background-select");
+const statesBox = document.getElementById("scene-states");
+const statesList = document.getElementById("scene-states-list");
 
-// ---- Saved layout -------------------------------------------------------------
-// Saved shape (v2):
-//   items[id] = { left, top, width, art }   art = the picture these numbers were made with
-//   order     = ids back to front
-//   flipChaise, shiftPreview, shiftRot, shiftX, selected, migrated
-// If `art` differs from the picture now in use, the card says "check the alignment"
-// instead of quietly treating the old numbers as final.
-
-function freshState() {
-  const items = {};
-  OBJECTS.forEach(function (o) {
-    items[o.id] = { left: o.start.left, top: o.start.top, width: o.start.width, art: o.art };
-  });
-  return {
-    version: 2,
-    items: items,
-    order: START_ORDER.slice(),
-    selected: "chaise",
-    flipChaise: false,
-    shiftPreview: false,
-    shiftRot: SHIFT_START.rot,
-    shiftX: SHIFT_START.x,
-    migrated: false,
-  };
-}
-
-function numbersOk(it) {
-  return !!it && ["left", "top", "width"].every(function (k) { return Number.isFinite(it[k]); });
-}
+// ---- Small helpers --------------------------------------------------------------------
 
 function readJson(key) {
   try {
@@ -103,65 +147,9 @@ function readJson(key) {
   }
 }
 
-function loadState() {
-  const state = freshState();
-
-  // 1. A v2 layout wins.
-  const v2 = readJson(STORAGE_KEY);
-  if (v2 && v2.items) {
-    OBJECTS.forEach(function (o) {
-      const it = v2.items[o.id];
-      if (numbersOk(it)) {
-        state.items[o.id] = { left: it.left, top: it.top, width: it.width, art: typeof it.art === "string" ? it.art : o.oldArt };
-      }
-    });
-    if (Array.isArray(v2.order)) {
-      const known = v2.order.filter(function (id) { return IDS.includes(id); });
-      const missing = IDS.filter(function (id) { return !known.includes(id); });
-      state.order = missing.concat(known); // anything new goes to the back
-    }
-    if (IDS.includes(v2.selected)) state.selected = v2.selected;
-    state.flipChaise = v2.flipChaise === true;
-    state.shiftPreview = v2.shiftPreview === true;
-    if (Number.isFinite(v2.shiftRot)) state.shiftRot = v2.shiftRot;
-    if (Number.isFinite(v2.shiftX)) state.shiftX = v2.shiftX;
-    state.migrated = v2.migrated === true;
-    return state;
-  }
-
-  // 2. No v2 yet: carry over the v1 arrangement. v1 is only read, never changed.
-  const v1 = readJson(OLD_STORAGE_KEY);
-  if (v1 && v1.items) {
-    let carried = 0;
-    OBJECTS.forEach(function (o) {
-      const it = v1.items[o.id];
-      if (numbersOk(it)) {
-        // Keep her numbers, and remember they were made with the OLD picture.
-        state.items[o.id] = { left: it.left, top: it.top, width: it.width, art: o.oldArt };
-        carried++;
-      }
-    });
-    if (carried > 0) {
-      if (Array.isArray(v1.order)) {
-        const known = v1.order.filter(function (id) { return IDS.includes(id); });
-        const missing = IDS.filter(function (id) { return !known.includes(id); });
-        state.order = missing.concat(known);
-      }
-      if (IDS.includes(v1.selected)) state.selected = v1.selected;
-      state.migrated = true;
-    }
-  }
-
-  // 3. Nothing saved: the starting suggestions.
-  return state;
-}
-
-let state = loadState();
-let drag = null;
-
-function save() {
+function writeJson(key, value) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    localStorage.setItem(key, JSON.stringify(value));
   } catch (err) {
     // Saving is a convenience only.
   }
@@ -175,6 +163,131 @@ function clamp(n, min, max) {
   return Math.min(max, Math.max(min, n));
 }
 
+function numbersOk(it) {
+  return !!it && ["left", "top", "width"].every(function (k) { return Number.isFinite(it[k]); });
+}
+
+// ---- Which scene is showing ---------------------------------------------------------------
+
+let ui = readJson(UI_KEY) || {};
+if (!SCENES[ui.scene]) ui.scene = "whimsical";
+if (!ui.backgrounds || typeof ui.backgrounds !== "object") ui.backgrounds = {};
+
+let sceneId = ui.scene;
+let scene = SCENES[sceneId];
+let OBJECTS = [];
+let IDS = [];
+let BY_ID = {};
+let state = null;
+let items = {};
+let cards = {};
+let drag = null;
+
+function saveUi() {
+  writeJson(UI_KEY, ui);
+}
+
+function backgroundKey() {
+  const chosen = ui.backgrounds[sceneId];
+  return BACKGROUNDS[chosen] ? chosen : scene.defaultBackground;
+}
+
+// ---- Saved layout ----------------------------------------------------------------------------
+// Saved shape:
+//   items[id] = { left, top, width, art }   art = the picture these numbers were made with
+//   order     = ids back to front
+//   flipChaise, shiftPreview, shiftRot, shiftX, selected, migrated
+//   visible   = { id: true/false } (only scenes that have show/hide pieces)
+// If `art` differs from the picture now in use, the card says "check the alignment"
+// instead of quietly treating the old numbers as final.
+
+function freshState() {
+  const itemsFresh = {};
+  OBJECTS.forEach(function (o) {
+    itemsFresh[o.id] = { left: o.start.left, top: o.start.top, width: o.start.width, art: o.art };
+  });
+  const s = {
+    version: sceneId === "sunlit" ? 2 : 1,
+    items: itemsFresh,
+    order: scene.startOrder.slice(),
+    selected: scene.selected,
+    flipChaise: false,
+    shiftPreview: false,
+    shiftRot: scene.shiftStart.rot,
+    shiftX: scene.shiftStart.x,
+    migrated: false,
+  };
+  if (OBJECTS.some(function (o) { return o.toggle; })) {
+    s.visible = {};
+    OBJECTS.forEach(function (o) {
+      if (o.toggle) s.visible[o.id] = true;
+    });
+  }
+  return s;
+}
+
+function mergeOrder(saved) {
+  const known = saved.filter(function (id) { return IDS.includes(id); });
+  const missing = IDS.filter(function (id) { return !known.includes(id); });
+  return missing.concat(known); // anything new goes to the back
+}
+
+function loadState() {
+  const s = freshState();
+
+  // 1. This scene's own saved arrangement wins.
+  const saved = readJson(scene.storageKey);
+  if (saved && saved.items) {
+    OBJECTS.forEach(function (o) {
+      const it = saved.items[o.id];
+      if (numbersOk(it)) {
+        s.items[o.id] = { left: it.left, top: it.top, width: it.width, art: typeof it.art === "string" ? it.art : o.oldArt };
+      }
+    });
+    if (Array.isArray(saved.order)) s.order = mergeOrder(saved.order);
+    if (IDS.includes(saved.selected)) s.selected = saved.selected;
+    s.flipChaise = saved.flipChaise === true;
+    s.shiftPreview = saved.shiftPreview === true;
+    if (Number.isFinite(saved.shiftRot)) s.shiftRot = saved.shiftRot;
+    if (Number.isFinite(saved.shiftX)) s.shiftX = saved.shiftX;
+    s.migrated = saved.migrated === true;
+    if (s.visible && saved.visible) {
+      Object.keys(s.visible).forEach(function (id) {
+        if (saved.visible[id] === false) s.visible[id] = false;
+      });
+    }
+    return s;
+  }
+
+  // 2. Sunlit scene only: no v2 yet, so carry over the v1 arrangement. v1 is only read, never changed.
+  if (scene.legacyKey) {
+    const v1 = readJson(scene.legacyKey);
+    if (v1 && v1.items) {
+      let carried = 0;
+      OBJECTS.forEach(function (o) {
+        const it = v1.items[o.id];
+        if (numbersOk(it)) {
+          // Keep her numbers, and remember they were made with the OLD picture.
+          s.items[o.id] = { left: it.left, top: it.top, width: it.width, art: o.oldArt };
+          carried++;
+        }
+      });
+      if (carried > 0) {
+        if (Array.isArray(v1.order)) s.order = mergeOrder(v1.order);
+        if (IDS.includes(v1.selected)) s.selected = v1.selected;
+        s.migrated = true;
+      }
+    }
+  }
+
+  // 3. Nothing saved: the starting suggestions.
+  return s;
+}
+
+function save() {
+  writeJson(scene.storageKey, state);
+}
+
 function setField(id, field, value) {
   const limits = { left: [-50, 100], top: [-50, 100], width: [2, 100] };
   state.items[id][field] = round1(clamp(value, limits[field][0], limits[field][1]));
@@ -184,10 +297,15 @@ function needsCheck(id) {
   return state.items[id].art !== BY_ID[id].art;
 }
 
-// ---- The pieces on the stage ---------------------------------------------------
+function isVisible(id) {
+  return !(state.visible && state.visible[id] === false);
+}
 
-const items = {};
-const cards = {};
+function tagText(o) {
+  return (o.existing ? "real game: " : "proposed for the real game: ") + o.group;
+}
+
+// ---- Building the stage and the cards for the current scene ------------------------------------
 
 function buildItem(o) {
   const el = document.createElement("div");
@@ -196,7 +314,6 @@ function buildItem(o) {
   el.style.setProperty("--hit", o.hit);
 
   const img = document.createElement("img");
-  img.src = FOLDER + o.art;
   img.alt = "";
   img.draggable = false;
   img.addEventListener("load", function () {
@@ -207,6 +324,7 @@ function buildItem(o) {
     const dims = cards[o.id] && cards[o.id].querySelector(".art-info");
     if (dims) dims.textContent = "Could not load " + o.art;
   });
+  img.src = FOLDER + o.art;
 
   const hit = document.createElement("div");
   hit.className = "hit";
@@ -222,7 +340,7 @@ function buildCard(o) {
   card.className = "card";
   card.innerHTML =
     '<h3><label><input type="radio" name="selected" value="' + o.id + '"> ' + o.label +
-    ' <span class="tag">real game: ' + o.group + "</span></label></h3>" +
+    ' <span class="tag">' + tagText(o) + "</span></label></h3>" +
     '<p class="art-info small"></p>' +
     '<div class="check-note" hidden>' +
     '<span>Position carried over from your earlier arrangement (older artwork). The new picture has different margins and proportions, so check the alignment.</span> ' +
@@ -267,12 +385,66 @@ function buildCard(o) {
   cardsBox.appendChild(card);
 }
 
-OBJECTS.forEach(function (o) {
-  buildCard(o);
-  buildItem(o);
-});
+// The "show / hide" checkboxes for the lamps.
+function buildStates() {
+  statesList.innerHTML = "";
+  const toggles = OBJECTS.filter(function (o) { return o.toggle; });
+  statesBox.hidden = toggles.length === 0;
+  toggles.forEach(function (o) {
+    const label = document.createElement("label");
+    label.className = "option";
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.dataset.visibleFor = o.id;
+    box.addEventListener("change", function () {
+      state.visible[o.id] = box.checked;
+      commit();
+    });
+    label.appendChild(box);
+    label.appendChild(document.createTextNode(" Show the " + o.label.toLowerCase()));
+    statesList.appendChild(label);
+  });
+}
 
-// ---- Drawing the current state ---------------------------------------------------
+function loadScene(id) {
+  sceneId = id;
+  scene = SCENES[id];
+  OBJECTS = scene.objects;
+  IDS = OBJECTS.map(function (o) { return o.id; });
+  BY_ID = {};
+  OBJECTS.forEach(function (o) { BY_ID[o.id] = o; });
+
+  // Rebuild the stage and the cards.
+  stage.innerHTML = "";
+  cardsBox.innerHTML = "";
+  items = {};
+  cards = {};
+  drag = null;
+  stage.classList.remove("dragging");
+  OBJECTS.forEach(function (o) {
+    buildCard(o);
+    buildItem(o);
+  });
+  buildStates();
+
+  state = loadState();
+
+  sceneSelect.value = id;
+  backgroundSelect.value = backgroundKey();
+  shiftNote.textContent =
+    "The shift starts with " + (id === "whimsical" ? "the real game's current numbers" : "the numbers from your earlier sandbox") +
+    " (rotate " + scene.shiftStart.rot + " deg, slide " + scene.shiftStart.x + "%). " +
+    "Flipping only mirrors the picture inside the box, and the shift moves the box, so the two never cancel each other.";
+
+  applyBackground();
+  apply();
+}
+
+function applyBackground() {
+  stage.style.backgroundImage = 'url("' + BACKGROUNDS[backgroundKey()].file + '")';
+}
+
+// ---- Drawing the current state ------------------------------------------------------------------
 
 function apply() {
   OBJECTS.forEach(function (o) {
@@ -284,19 +456,26 @@ function apply() {
     el.style.width = it.width + "%";
     el.style.zIndex = state.order.indexOf(id) + 1;
     el.classList.toggle("selected", id === state.selected);
+    el.hidden = !isVisible(id);
 
     const card = cards[id];
     card.classList.toggle("active", id === state.selected);
+    card.classList.toggle("is-hidden", !isVisible(id));
     card.querySelector('input[type="radio"]').checked = id === state.selected;
     card.querySelectorAll("[data-field]").forEach(function (input) {
       // Don't overwrite the box the person is typing in.
       if (document.activeElement !== input) input.value = it[input.dataset.field];
     });
     const layer = state.order.indexOf(id) + 1;
-    card.querySelector(".layer-label").textContent = "Layer " + layer + " of " + IDS.length + " (1 = back)";
+    card.querySelector(".layer-label").textContent =
+      "Layer " + layer + " of " + IDS.length + " (1 = back)" + (isVisible(id) ? "" : " - hidden in the preview");
     card.querySelector('[data-action="back"]').disabled = layer === 1;
     card.querySelector('[data-action="forward"]').disabled = layer === IDS.length;
     card.querySelector(".check-note").hidden = !needsCheck(id);
+  });
+
+  statesList.querySelectorAll("[data-visible-for]").forEach(function (box) {
+    box.checked = isVisible(box.dataset.visibleFor);
   });
 
   // The two chaise previews. The flip is on the picture; the shift is on the box.
@@ -318,11 +497,11 @@ function apply() {
 function showLayerWarning() {
   const clashes = [];
   OBJECTS.forEach(function (right) {
-    if (right.group !== "right-side") return;
+    if (right.group !== "right-side" || !isVisible(right.id)) return;
     OBJECTS.forEach(function (left) {
-      if (left.group !== "left-side") return;
+      if (left.group !== "left-side" || !isVisible(left.id)) return;
       if (state.order.indexOf(right.id) > state.order.indexOf(left.id)) {
-        clashes.push(right.label + " is in front of the " + left.label.toLowerCase());
+        clashes.push("the " + right.label.toLowerCase() + " is in front of the " + left.label.toLowerCase());
       }
     });
   });
@@ -359,12 +538,16 @@ function moveLayer(id, step) {
 }
 
 function makeCss() {
-  const lines = ["/* Layout sandbox values: percent of the stage. z-index: higher = in front. */"];
+  const lines = [
+    "/* Layout sandbox values: percent of the stage. z-index: higher = in front. */",
+    "/* Scene: " + scene.label + ".  Background: " + BACKGROUNDS[backgroundKey()].file + " */",
+  ];
   OBJECTS.forEach(function (o) {
     const it = state.items[o.id];
     let line =
       "#" + o.id + " { left: " + it.left + "%; top: " + it.top + "%; width: " + it.width +
       "%; z-index: " + (state.order.indexOf(o.id) + 1) + "; }  /* art: " + o.art;
+    if (!isVisible(o.id)) line += " - hidden in the preview right now";
     if (needsCheck(o.id)) line += " - NEEDS ALIGNMENT CHECK: numbers came from older artwork";
     lines.push(line + " */");
   });
@@ -376,12 +559,18 @@ function makeCss() {
   lines.push("/* Clue shift (preview " + (state.shiftPreview ? "ON" : "off") + "). It moves the chaise box, the flip only mirrors the picture, so they don't clash. */");
   lines.push("#chaise.chaise-shifted { transform: rotate(" + state.shiftRot + "deg) translateX(" + state.shiftX + "%); transition: transform 0.5s ease; }");
   lines.push("");
-  lines.push("/* Real game groups: bookcase + chaise are in #left-side (always in front); desk + chair are in #right-side. */");
-  lines.push("/* The real #desk is HTML with min-height and buttons inside; these values only place artwork in the sandbox. */");
+  if (sceneId === "whimsical") {
+    lines.push("/* Real game groups today: chaise is in #left-side (always in front); desk + chair are in #right-side. */");
+    lines.push("/* The flower lamp and mushroom lamp do not exist in the real game yet; #right-side is proposed for both. */");
+    lines.push("/* The real #desk is HTML with buttons inside; these values only place artwork in the sandbox. */");
+  } else {
+    lines.push("/* Real game groups: bookcase + chaise are in #left-side (always in front); desk + chair are in #right-side. */");
+    lines.push("/* The real #desk is HTML with min-height and buttons inside; these values only place artwork in the sandbox. */");
+  }
   return lines.join("\n");
 }
 
-// ---- Dragging with the mouse -----------------------------------------------------
+// ---- Dragging with the mouse ---------------------------------------------------------------------
 
 stage.addEventListener("pointerdown", function (e) {
   const el = e.target.closest(".item");
@@ -396,6 +585,7 @@ stage.addEventListener("pointerdown", function (e) {
     top: state.items[id].top,
     width: box.width,
     height: box.height,
+    moved: false,
   };
   try {
     stage.setPointerCapture(e.pointerId);
@@ -414,6 +604,7 @@ stage.addEventListener("pointermove", function (e) {
   const dy = ((e.clientY - drag.startY) / drag.height) * 100;
   setField(drag.id, "left", drag.left + dx);
   setField(drag.id, "top", drag.top + dy);
+  drag.moved = true;
   apply();
 });
 
@@ -427,7 +618,7 @@ function endDrag() {
 stage.addEventListener("pointerup", endDrag);
 stage.addEventListener("pointercancel", endDrag);
 
-// ---- Arrow keys nudge the selected object ----------------------------------------
+// ---- Arrow keys nudge the selected object ---------------------------------------------------------
 
 stage.addEventListener("keydown", function (e) {
   const step = e.shiftKey ? 1 : 0.1;
@@ -445,7 +636,23 @@ stage.addEventListener("keydown", function (e) {
   commit();
 });
 
-// ---- Chaise previews, options, copy and reset -------------------------------------
+// ---- Scene and background pickers --------------------------------------------------------------------
+
+sceneSelect.addEventListener("change", function () {
+  ui.scene = sceneSelect.value;
+  saveUi();
+  loadScene(ui.scene);
+  say("Showing: " + scene.label + ". The other arrangement is untouched.");
+});
+
+backgroundSelect.addEventListener("change", function () {
+  ui.backgrounds[sceneId] = backgroundSelect.value;
+  saveUi();
+  applyBackground();
+  apply();
+});
+
+// ---- Chaise previews, options, copy and reset -----------------------------------------------------------
 
 flipBox.addEventListener("change", function () {
   state.flipChaise = flipBox.checked;
@@ -479,7 +686,7 @@ function say(message) {
   statusText.textContent = message;
   setTimeout(function () {
     if (statusText.textContent === message) statusText.textContent = "";
-  }, 2500);
+  }, 4000);
 }
 
 document.getElementById("copy").addEventListener("click", function () {
@@ -495,7 +702,8 @@ document.getElementById("copy").addEventListener("click", function () {
 
 document.getElementById("reset").addEventListener("click", function () {
   const ok = window.confirm(
-    "Replace your arrangement with the starting suggestions for the new artwork?\n\n" +
+    "Replace the arrangement for \"" + scene.label + "\" with its starting suggestions?\n\n" +
+    "Only this scene is reset. The other scene's saved arrangement is not touched.\n\n" +
     "Tip: press Cancel and use Copy CSS first if you want to keep your current values."
   );
   if (!ok) return;
@@ -504,8 +712,11 @@ document.getElementById("reset").addEventListener("click", function () {
   say("Reset to starting suggestions.");
 });
 
-const firstRunOfV2 = readJson(STORAGE_KEY) === null;
-commit();
-if (state.migrated && firstRunOfV2) {
-  say("Your earlier arrangement was carried over. Check the new artwork's alignment.");
+// ---- Start -----------------------------------------------------------------------------------------------
+
+// Loading never writes a saved arrangement. Only a change you make does.
+const hadSavedSunlit = readJson(SCENES.sunlit.storageKey) !== null;
+loadScene(sceneId);
+if (sceneId === "sunlit" && state.migrated && !hadSavedSunlit) {
+  say("Your earlier arrangement was carried over. Check the artwork's alignment.");
 }

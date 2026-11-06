@@ -21,15 +21,9 @@
         <div class="window-blind"></div>
     </div>
 </div>
+<!-- The bookshelves are painted into the background picture now, so #bookcase is only an
+     invisible layer. The button below sits over the painted Suspicious Begonias book. -->
 <div id="bookcase">
-    <img
-        src="images/objects/Detective Bookcase of Mysteries.png"
-        class="bookcase-art"
-        width="1122"
-        height="1402"
-        alt="Ornate wooden detective bookcase filled with mystery books and curious objects"
-    >
-
     <button
         type="button"
         id="begonia-book"
@@ -42,7 +36,7 @@
   
 <div id="chaise">
 
-    <img src="images/objects/purple-chaise-transparent.png" alt="Mabel's purple velvet chaise with carved animal-paw feet and orange pillows">
+    <img src="images/objects/03_purple_chaise.png" alt="Mabel's purple velvet chaise with a cream knitted throw and a butterfly pillow">
         <div id="mabel">Mabel reading a battered case file (placeholder)</div>
   </div>
 
@@ -50,12 +44,22 @@
 
     <section id="right-side">
       <!-- Decorative chair: sits behind the desk and never takes clicks. -->
-      <img id="chair" src="images/objects/Ornate Mushroom Emblem Leather Chair - transparent.png" alt="">
-      <div id="desk">
-  
+      <img id="chair" src="images/objects/Whimsical_chair.png" alt="">
+
+      <!-- Decorative flower floor lamp: behind the desk and the chaise, never takes clicks. -->
+      <img id="flower-lamp" src="images/objects/04_orange_flower_floor_lamp (2).png" alt="" hidden>
+
+      <!-- Mario's mushroom lamp, standing on the desk. The picture is decoration;
+           the button is the real control. It comes before #desk in the page so the
+           keyboard Tab order stays the same (lamp, then Case File). -->
+      <div id="mushroom-lamp">
+        <img src="images/objects/06_mario_green_mushroom_lamp.png" alt="">
         <button type="button" class="desk-lamp" id="mario-lamp" aria-pressed="false">
          🟢 Mario's Lamp
         </button>
+      </div>
+
+      <div id="desk">
 
     <div class="desk-folder">
         📁 Case #001 — UNSOLVED
