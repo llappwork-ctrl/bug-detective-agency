@@ -10,6 +10,16 @@
   <h1>The Bug Detective Agency</h1>
   <h2>Laura's Detective's Office</h2>
 
+<div id="top-controls">
+    <button type="button" id="notebook-button">
+        📓 Detective Notebook
+    </button>
+
+    <button type="button" id="reset-investigation">
+        ↺ Reset Investigation
+    </button>
+</div>
+
   <main id="office">
 
     <section id="left-side">
@@ -77,13 +87,56 @@
 
 </main>
 
-  <aside id="case-panel">
-    <h3>Case Files</h3>
+  <dialog id="case-panel" aria-labelledby="case-title">
+  <h3 id="case-title">Case Files</h3>
+  <button type="button" id="close-case-file">Close Notebook ✕</button>
     <ul>
       <li>Case #000: The Missing Garden Gnome — SOLVED</li>
-      <li>Case #001: The Curious Case of the Mixed-Up Records — UNSOLVED</li>
+      <li>Case #001: The Curious Case of the Mixed-Up Records — UNSOLVED
+        <p>Three agency records disagree about a mysterious plant.</p>
+        <h4>Evidence Records</h4>
+        
+<article id="record-r01">
+
+  <details>
+    <summary>R01 — Plant Delivery Register</summary>
+
+    <h5>Bramblewick Garden Society</h5>
+    <p>Official Plant Delivery Register</p>
+
+    <p><strong>Register Number:</strong> BG-218</p>
+    <p><strong>Date Received:</strong> September 18</p>
+    <p><strong>Supplier:</strong> Fern & Fable Nursery</p>
+    <p><strong>Item:</strong> 12 trays of begonias</p>
+    <p><strong>Delivery Location:</strong> Service entrance</p>
+    <p><strong>Recorded By:</strong> Penelope Finch</p>
+
+  </details>
+
+</article>
+
+      </li>
     </ul>
-  </aside>
+  </dialog>
+  <dialog id="notebook-panel" aria-labelledby="notebook-title">
+    <h3 id="notebook-title">Detective Notebook</h3>
+
+    <button type="button" id="close-notebook">Save & Close 📓</button>
+
+    <p>
+        Use this notebook to write down observations, questions, and theories.
+    </p>
+
+    <label for="detective-notes"><strong>Field Notes</strong></label>
+    <textarea
+        id="detective-notes"
+        rows="12"
+        placeholder="What did you notice? What seems suspicious? What questions do you have?"
+    ></textarea>
+
+    <p id="notes-status" aria-live="polite">Notebook ready.</p>
+
+</dialog>
 
   <script src="script.js"></script>
 </body>

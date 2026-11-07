@@ -199,10 +199,31 @@ body {
 }
 
 #case-panel {
-  margin-top: 20px;
-  padding: 16px;
   background-color: #fffbe8;
   border: 2px solid #8a7a5c;
+}
+/* CASE FILES POPUP NOTEBOOK */
+
+#case-panel {
+    width: min(700px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    margin: auto;
+    padding: 24px;
+    border-radius: 12px;
+}
+
+/* Darken the office behind the open notebook */
+#case-panel::backdrop {
+    background-color: rgba(20, 12, 30, 0.65);
+}
+
+/* Keep the close button easy to recognize */
+#close-case-file {
+    cursor: pointer;
+    padding: 8px 14px;
+    margin-bottom: 12px;
 }
 
 /* Our illustrated background already has a window,
@@ -316,4 +337,66 @@ body {
 
 #mabel {
     display: none;
+}
+/* TOP CONTROL BUTTONS */
+
+#top-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+#top-controls button {
+    padding: 8px 14px;
+    cursor: pointer;
+}
+
+
+/* DETECTIVE NOTEBOOK */
+
+#notebook-panel {
+    width: min(720px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    margin: auto;
+    padding: 24px;
+    border: 2px solid #8a7a5c;
+    border-radius: 12px;
+    background-color: #fffdf4;
+}
+
+#notebook-panel::backdrop {
+    background-color: rgba(20, 12, 30, 0.65);
+}
+
+#close-notebook,
+#clear-notes {
+    cursor: pointer;
+    padding: 8px 14px;
+    margin-bottom: 12px;
+}
+
+#detective-notes {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    padding: 12px;
+    resize: vertical;
+    line-height: 1.6;
+
+    /* Handwriting-style look */
+    font-family: "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive;
+    font-size: 1.05rem;
+
+    background-color: #fffef8;
+    border: 1px solid #b8ab8a;
+    border-radius: 8px;
+}
+
+#notes-status {
+    font-style: italic;
+    color: #5a4f3b;
 }
