@@ -65,6 +65,7 @@ if (begoniaBook && mabelDialogue) {
             
                 if (chaise) {
                     chaise.classList.add("chaise-shifted");
+                    updateR02OfficeRewards();
                 }
             
                  console.log("Clue discovered: Suspicious Begonia");
@@ -93,6 +94,7 @@ if (resetButton) {
         // Forget saved investigation progress.
         localStorage.removeItem("begoniaClueFound");
         localStorage.removeItem("detectiveNotebookNotes");
+        localStorage.removeItem("recordR02Found");
 
         // Reload the office in its starting state.
         window.location.reload();
@@ -147,11 +149,109 @@ if (
         notesStatus.textContent = "Your notes are saved automatically.";
     });
 
-    // Clear notes on purpose
-    clearNotesButton.addEventListener("click", function () {
-        detectiveNotes.value = "";
-        localStorage.removeItem("detectiveNotebookNotes");
-        notesStatus.textContent = "Notes cleared.";
-        detectiveNotes.focus();
+}
+const filingCabinetButton =
+    document.getElementById("filing-cabinet-button");
+
+const r02Dialog =
+    document.getElementById("record-r02-dialog");
+
+const closeR02Button =
+    document.getElementById("close-r02");
+
+const r02Message =
+    document.getElementById("r02-discovery-message");
+
+if (filingCabinetButton && r02Dialog && closeR02Button && r02Message) {
+
+    filingCabinetButton.addEventListener("click", function () {
+
+        const alreadyFound =
+            localStorage.getItem("recordR02Found") === "true";
+
+        if (alreadyFound) {
+            r02Message.textContent =
+                "Previously discovered. You can examine this record again.";
+        } else {
+            localStorage.setItem("recordR02Found", "true");
+
+            r02Message.textContent =
+                "New evidence discovered! R02 has been recorded.";
+        }
+        updateR02OfficeRewards();
+        r02Dialog.showModal();
+    });
+
+    closeR02Button.addEventListener("click", function () {
+        r02Dialog.close();
     });
 }
+
+// Show collected R02 evidence in the notebook.
+
+const notebookR02 = document.getElementById("notebook-r02");
+const notebookNoEvidence =
+    document.getElementById("notebook-no-evidence");
+const notebookOpenR02 =
+    document.getElementById("notebook-open-r02");
+
+function updateNotebookEvidence() {
+    if (!notebookR02 || !notebookNoEvidence) {
+        return;
+    }
+
+    const r02Found =
+        localStorage.getItem("recordR02Found") === "true";
+
+    notebookR02.hidden = !r02Found;
+    notebookNoEvidence.hidden = r02Found;
+}
+
+// Check saved discoveries whenever the notebook opens.
+if (notebookButton) {
+    notebookButton.addEventListener("click", updateNotebookEvidence);
+}
+
+// Allow the detective to reopen an already found document.
+if (notebookOpenR02 && notebookPanel && r02Dialog && r02Message) {
+    notebookOpenR02.addEventListener("click", function () {
+
+        if (localStorage.getItem("recordR02Found") !== "true") {
+            return;
+        }
+
+        notebookPanel.close();
+
+        r02Message.textContent =
+            "Previously discovered. You can examine this record again.";
+
+            updateR02OfficeRewards();
+            r02Dialog.showModal();
+    });
+}
+
+// Display the correct state when the page first loads.
+updateNotebookEvidence();
+// R02 office rewards
+
+const teaSteam = document.getElementById("tea-steam");
+const rewardPlant = document.getElementById("reward-plant");
+const rewardTable = document.getElementById("reward-table");
+
+function updateR02OfficeRewards() {
+    const r02Found =
+        localStorage.getItem("recordR02Found") === "true";
+
+    if (teaSteam) {
+        teaSteam.hidden = !r02Found;
+    }
+
+    if (rewardPlant) {
+        rewardPlant.hidden = !r02Found;
+    }
+    if (rewardTable) {
+        const chaiseMoved = localStorage.getItem("begoniaClueFound") === "true";
+        rewardTable.hidden = !(r02Found && chaiseMoved);
+    }
+     
+} updateR02OfficeRewards();

@@ -58,7 +58,13 @@
 
       <!-- Decorative flower floor lamp: behind the desk and the chaise, never takes clicks. -->
       <img id="flower-lamp" src="images/objects/04_orange_flower_floor_lamp (2).png" alt="" hidden>
-
+      <img id="reward-table"
+     src="images/objects/Ornate Table with Butterfly Flower Pot.png"
+     alt=""
+     hidden>
+      <img id="flower-pot-2" src="images/objects/Flower Pot 2.png" alt="" hidden>
+      <img id="flower-pot-3" src="images/objects/Flower Pot 3.png" alt="" hidden>
+      <img id="sleeping-kitty" src="images/objects/Kitty in a Basket.png" alt="" hidden>
       <!-- Mario's mushroom lamp, standing on the desk. The picture is decoration;
            the button is the real control. It comes before #desk in the page so the
            keyboard Tab order stays the same (lamp, then Case File). -->
@@ -84,6 +90,26 @@
     </button>
   </div>
 </section>
+
+<button
+    type="button"
+    id="filing-cabinet-button"
+    aria-label="Examine the filing cabinet"
+    title="Examine filing cabinet"
+>
+    <span class="visually-hidden">
+        Examine filing cabinet
+    </span>
+</button>
+<div id="tea-steam" hidden aria-hidden="true">
+    <span class="steam steam-1"></span>
+    <span class="steam steam-2"></span>
+    <span class="steam steam-3"></span>
+</div>
+<div id="reward-plant" hidden aria-hidden="true">
+    <img src="images/objects/Flower Pot 1.png" alt="">
+</div>
+
 
 </main>
 
@@ -127,6 +153,26 @@
         Use this notebook to write down observations, questions, and theories.
     </p>
 
+<section id="notebook-evidence">
+    <h4>Collected Evidence</h4>
+
+    <p id="notebook-no-evidence">
+        No collected documents yet.
+    </p>
+
+    <div id="notebook-r02" hidden>
+        <p>
+            <strong>R02 — Revised Plant Delivery Register</strong>
+        </p>
+
+        <p>Found in the agency filing cabinet.</p>
+
+        <button type="button" id="notebook-open-r02">
+            Examine R02
+        </button>
+    </div>
+</section>
+
     <label for="detective-notes"><strong>Field Notes</strong></label>
     <textarea
         id="detective-notes"
@@ -138,6 +184,33 @@
 
 </dialog>
 
-  <script src="script.js"></script>
+<!-- R02 — Revised Plant Delivery Register -->
+
+<dialog id="record-r02-dialog" aria-labelledby="r02-title">
+
+    <h3 id="r02-title">
+        R02 — Revised Plant Delivery Register
+    </h3>
+
+    <p><strong>Bramblewick Garden Society</strong></p>
+    <p>Revised Plant Delivery Register</p>
+
+    <p><strong>Register Number:</strong> BG-218</p>
+    <p><strong>Date:</strong> September 19</p>
+    <p><strong>Supplier:</strong> Fern &amp; Fable Nursery</p>
+    <p><strong>Item:</strong> 12 trays of begonias</p>
+    <p><strong>Location:</strong> East Begonia Bed</p>
+
+    <p id="r02-discovery-message" aria-live="polite"></p>
+
+    <button type="button" id="close-r02">
+        Return to Office
+    </button>
+
+</dialog>
+
+
+<script src="script.js"></script>
 </body>
 </html>
+

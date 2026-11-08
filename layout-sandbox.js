@@ -68,9 +68,39 @@ const SCENES = {
         hit: "0.3% 0.4% 0.6% 0.8%",
         start: { left: 37.5, top: 45, width: 7.5 },
       },
+      {
+        id: "reward-plant", label: "Flower Pot 1", group: "right-side", existing: false, toggle: true,
+        art: "Flower Pot 1.png",
+        hit: "13.8% 12.9% 17.1% 12.7%",
+        start: { left: 9, top: 28, width: 7 },
+      },
+      {
+        id: "reward-table", label: "Ornate flower table", group: "right-side", existing: false, toggle: true,
+        art: "Ornate Table with Butterfly Flower Pot.png",
+        hit: "5.6% 24.2% 10.3% 23.4%",
+        start: { left: 53.4, top: 56, width: 11 },
+      },
+      {
+        id: "flower-pot-2", label: "Flower Pot 2", group: "right-side", existing: false, toggle: true,
+        art: "Flower Pot 2.png",
+        hit: "1.5% 0.8% 1.6% 1%",
+        start: { left: 3, top: 66, width: 6 },
+      },
+      {
+        id: "flower-pot-3", label: "Flower Pot 3", group: "right-side", existing: false, toggle: true,
+        art: "Flower Pot 3.png",
+        hit: "10.8% 10.9% 14.5% 10.5%",
+        start: { left: 47, top: 52, width: 7 },
+      },
+      {
+        id: "sleeping-kitty", label: "Sleeping kitty in a basket", group: "right-side", existing: false, toggle: true,
+        art: "Kitty in a Basket.png",
+        hit: "19.8% 6% 18.1% 5.6%",
+        start: { left: 80, top: 72, width: 15 },
+      },
     ],
-    // Back to front: chair behind desk, flower lamp behind chaise, mushroom lamp on the desk.
-    startOrder: ["chair", "flower-lamp", "desk", "mushroom-lamp", "chaise"],
+    // Back to front: the chaise is in front of the table and other decorations.
+    startOrder: ["chair", "flower-lamp", "desk", "mushroom-lamp", "reward-plant", "reward-table", "flower-pot-2", "flower-pot-3", "sleeping-kitty", "chaise"],
     selected: "chaise",
     // Starting point = the real game's current clue movement (style.css: #chaise.chaise-shifted).
     shiftStart: { rot: -3, x: 15 },
