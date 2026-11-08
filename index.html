@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>The Bug Detective Agency</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -19,7 +19,7 @@
         ↺ Reset Investigation
     </button>
 </div>
-
+<p class="rotate-hint">Rotate your device sideways for a wider view of the office.</p>
   <main id="office">
 
     <section id="left-side">
@@ -42,7 +42,6 @@
     ></button>
 </div>
         
-<p id="mabel-dialogue" aria-live="polite" hidden></p>
   
 <div id="chaise">
 
@@ -94,6 +93,7 @@
 <button
     type="button"
     id="filing-cabinet-button"
+    class="cabinet-hotspot"
     aria-label="Examine the filing cabinet"
     title="Examine filing cabinet"
 >
@@ -101,6 +101,8 @@
         Examine filing cabinet
     </span>
 </button>
+<button type="button" id="filing-cabinet-r03" class="cabinet-hotspot" aria-label="Preview drawer R03" aria-haspopup="dialog" aria-controls="cabinet-preview"></button>
+<button type="button" id="filing-cabinet-r05" class="cabinet-hotspot" aria-label="Preview drawer R05" aria-haspopup="dialog" aria-controls="cabinet-preview"></button>
 <div id="tea-steam" hidden aria-hidden="true">
     <span class="steam steam-1"></span>
     <span class="steam steam-2"></span>
@@ -115,16 +117,14 @@
 
   <dialog id="case-panel" aria-labelledby="case-title">
   <h3 id="case-title">Case Files</h3>
-  <button type="button" id="close-case-file">Close Notebook ✕</button>
+  <button type="button" id="close-case-file">Close Case Files ✕</button>
     <ul>
-      <li>Case #000: The Missing Garden Gnome — SOLVED</li>
       <li>Case #001: The Curious Case of the Mixed-Up Records — UNSOLVED
         <p>Three agency records disagree about a mysterious plant.</p>
         <h4>Evidence Records</h4>
         
-<article id="record-r01">
-
-  <details>
+<article>
+  <details id="record-r01">
     <summary>R01 — Plant Delivery Register</summary>
 
     <h5>Bramblewick Garden Society</h5>
@@ -171,6 +171,19 @@
             Examine R02
         </button>
     </div>
+
+    <div id="notebook-r01" hidden>
+    <p>
+        <strong>R01 — Plant Delivery Register</strong>
+    </p>
+
+    <p>Examined in the agency Case Files.</p>
+
+    <button type="button" id="notebook-open-r01">
+        Examine R01
+    </button>
+    </div>
+
 </section>
 
     <label for="detective-notes"><strong>Field Notes</strong></label>
@@ -209,6 +222,21 @@
 
 </dialog>
 
+
+<dialog id="case-archive" class="office-document" aria-labelledby="case-archive-title">
+    <h3 id="case-archive-title">Case #000 — The Missing Garden Gnome</h3>
+    <form method="dialog"><button type="submit" class="dialog-action">Close Archive ✕</button></form>
+    <p><strong>Original recorded status: SOLVED</strong></p>
+    <p id="mabel-dialogue">The flowers are innocent, Detective. It's what's hiding inside them that confounds me.</p>
+    <p>Mr. Pickles disappeared. The earlier investigation accepted a prank explanation without sufficiently verifying his recovery. Historical records and photographs survived the cleanup.</p>
+    <p><em>Archive placeholder: The report (R07), photographs, and statements are awaiting approval.</em></p>
+</dialog>
+
+<dialog id="cabinet-preview" class="office-document" aria-labelledby="cabinet-preview-title">
+    <h3 id="cabinet-preview-title">Cabinet drawer preview</h3>
+    <p>Development preview only. This record is awaiting approval.</p>
+    <form method="dialog"><button type="submit" class="dialog-action">Return to Office</button></form>
+</dialog>
 
 <script src="script.js"></script>
 </body>

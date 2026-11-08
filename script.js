@@ -27,52 +27,29 @@ if (caseButton && casePanel && closeCaseButton) {
 }
 
 const begoniaBook = document.getElementById("begonia-book");
-const mabelDialogue = document.getElementById("mabel-dialogue");
+const caseArchive = document.getElementById("case-archive");
 
-if (begoniaBook && mabelDialogue) {
-    begoniaBook.setAttribute("aria-controls", "mabel-dialogue");
-    begoniaBook.setAttribute("aria-expanded", "false");
-    
-    let begoniaClueFound =
-    localStorage.getItem("begoniaClueFound") === "true";
+if (begoniaBook && caseArchive) {
+    begoniaBook.setAttribute("aria-controls", "case-archive");
+    begoniaBook.setAttribute("aria-haspopup", "dialog");
+    const chaise = document.getElementById("chaise");
+    let begoniaClueFound = localStorage.getItem("begoniaClueFound") === "true";
 
-    // Saved progress: put Mabel's chaise back where the clue left it.
-    if (begoniaClueFound) {
-        const savedChaise = document.getElementById("chaise");
-
-        if (savedChaise) {
-            savedChaise.classList.add("chaise-shifted");
-        }
+    if (begoniaClueFound && chaise) {
+        chaise.classList.add("chaise-shifted");
     }
 
     begoniaBook.addEventListener("click", function () {
-        
-        mabelDialogue.hidden = !mabelDialogue.hidden;
-
-        const isOpen = !mabelDialogue.hidden;
-
-        begoniaBook.setAttribute("aria-expanded", String(isOpen));
-    
-        if (isOpen) {
-            mabelDialogue.textContent =
-                "The flowers are innocent, Detective. It's what's hiding inside them that confounds me.";
-            
-                if(!begoniaClueFound) {
-                begoniaClueFound = true;
-                localStorage.setItem("begoniaClueFound", "true");
-                
-                const chaise = document.getElementById("chaise");
-            
-                if (chaise) {
-                    chaise.classList.add("chaise-shifted");
-                    updateR02OfficeRewards();
-                }
-            
-                 console.log("Clue discovered: Suspicious Begonia");
-        } // Closes the first-discovery condition
-    }     // Closes if (isOpen)
-    });   // Closes the click listener
-}         // Closes if (begoniaBook && mabelDialogue)
+        if (!begoniaClueFound) {
+            begoniaClueFound = true;
+            localStorage.setItem("begoniaClueFound", "true");
+            if (chaise) chaise.classList.add("chaise-shifted");
+            updateR02OfficeRewards();
+            console.log("Clue discovered: Suspicious Begonia");
+        }
+        caseArchive.showModal();
+    });
+}
 // Mario's Lamp — click to turn on or off
 const marioLamp = document.getElementById("mario-lamp");
 
@@ -95,6 +72,7 @@ if (resetButton) {
         localStorage.removeItem("begoniaClueFound");
         localStorage.removeItem("detectiveNotebookNotes");
         localStorage.removeItem("recordR02Found");
+        localStorage.removeItem("recordR01Found");
 
         // Reload the office in its starting state.
         window.location.reload();
@@ -187,24 +165,46 @@ if (filingCabinetButton && r02Dialog && closeR02Button && r02Message) {
     });
 }
 
-// Show collected R02 evidence in the notebook.
+// Cabinet previews show placeholders without collecting evidence.
+const cabinetPreview = document.getElementById("cabinet-preview");
+const cabinetPreviewTitle = document.getElementById("cabinet-preview-title");
 
+if (cabinetPreview && cabinetPreviewTitle) {
+    const previewDrawers = {
+        "filing-cabinet-r03": "R03 — Garden Maintenance Log",
+        "filing-cabinet-r05": "R05 — Original Delivery Slip"
+    };
+
+    for (const [id, title] of Object.entries(previewDrawers)) {
+        const drawer = document.getElementById(id);
+        if (drawer) {
+            drawer.addEventListener("click", function () {
+                cabinetPreviewTitle.textContent = title;
+                cabinetPreview.showModal();
+            });
+        }
+    }
+}
+
+// Show collected evidence in the notebook.
+
+const recordR01 = document.getElementById("record-r01");
+const notebookR01 = document.getElementById("notebook-r01");
+const notebookOpenR01 = document.getElementById("notebook-open-r01");
 const notebookR02 = document.getElementById("notebook-r02");
-const notebookNoEvidence =
-    document.getElementById("notebook-no-evidence");
-const notebookOpenR02 =
-    document.getElementById("notebook-open-r02");
+const notebookNoEvidence = document.getElementById("notebook-no-evidence");
+const notebookOpenR02 = document.getElementById("notebook-open-r02");
 
 function updateNotebookEvidence() {
-    if (!notebookR02 || !notebookNoEvidence) {
-        return;
+    const r01Found = localStorage.getItem("recordR01Found") === "true";
+    const r02Found = localStorage.getItem("recordR02Found") === "true";
+
+    if (notebookR01) notebookR01.hidden = !r01Found;
+    if (notebookR02) notebookR02.hidden = !r02Found;
+
+    if (notebookNoEvidence) {
+        notebookNoEvidence.hidden = r01Found || r02Found;
     }
-
-    const r02Found =
-        localStorage.getItem("recordR02Found") === "true";
-
-    notebookR02.hidden = !r02Found;
-    notebookNoEvidence.hidden = r02Found;
 }
 
 // Check saved discoveries whenever the notebook opens.
@@ -229,9 +229,27 @@ if (notebookOpenR02 && notebookPanel && r02Dialog && r02Message) {
             r02Dialog.showModal();
     });
 }
+if (recordR01) {
+    recordR01.addEventListener("toggle", function () {
+        if (recordR01.open) {
+            localStorage.setItem("recordR01Found", "true");
+            updateNotebookEvidence();
+        }
+    });
+}
+
+if (notebookOpenR01 && notebookPanel && casePanel && caseButton && recordR01) {
+    notebookOpenR01.addEventListener("click", function () {
+        notebookPanel.close();
+        recordR01.open = true;
+        casePanel.showModal();
+        caseButton.setAttribute("aria-expanded", "true");
+    });
+}
 
 // Display the correct state when the page first loads.
 updateNotebookEvidence();
+
 // R02 office rewards
 
 const teaSteam = document.getElementById("tea-steam");
