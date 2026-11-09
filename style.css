@@ -245,7 +245,7 @@ body {
 /* CASE FILES POPUP NOTEBOOK */
 
 #case-panel {
-    width: min(700px, calc(100vw - 32px));
+    width: min(600px, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
     box-sizing: border-box;
     overflow-y: auto;
@@ -309,7 +309,8 @@ body {
     pointer-events: none;
 }
 
-#begonia-book {
+#begonia-book,
+#mysteries-book {
     position: absolute;
     /* The "Suspicious Begonias" book painted on the shelf: measured at x 862-1040, y 328-359
        px of the 1670 x 941 background, converted to percent of the scene. (The background is
@@ -342,8 +343,18 @@ body {
         linear-gradient(to right,  rgba(255, 215, 80, 0.60) 0%, rgba(255, 215, 80, 0) 7%);
 }
 
+/* M.Q. Mysteries sits on the shelf above Suspicious Begonias. */
+#mysteries-book {
+    left: 52.2%;
+    top: 30.8%;
+    width: 9.9%;
+    height: 3.3%;
+}
+
 /* Hover: the same edge light, a little brighter and a little deeper, still short of the words. */
 #begonia-book:hover,
+#mysteries-book:hover,
+#mysteries-book:focus-visible,
 #begonia-book:focus-visible {
     box-shadow: 0 0 8px rgba(255, 206, 92, 0.85), 0 0 14px rgba(255, 180, 65, 0.45);
     background:
@@ -354,7 +365,8 @@ body {
 
 /* Keyboard focus: a two-tone ring (light gold + dark brown), readable on both pale and
    dark wood. */
-#begonia-book:focus-visible {
+#begonia-book:focus-visible,
+#mysteries-book:focus-visible {
     outline: 3px solid #ffe28a;
     outline-offset: 2px;
     box-shadow: 0 0 0 2px #3b2400, 0 0 12px rgba(255, 206, 92, 0.8);
@@ -396,7 +408,7 @@ body {
 /* DETECTIVE NOTEBOOK */
 
 #notebook-panel {
-    width: min(720px, calc(100vw - 32px));
+    width: min(600px, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
     box-sizing: border-box;
     overflow-y: auto;
@@ -620,4 +632,52 @@ body {
         margin: 0 0 0.75rem;
         font-size: 0.9rem;
     }
+}
+
+.notebook-tabs {
+    display: flex;
+    gap: 5px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.notebook-tab {
+    padding: 12px 16px;
+    border: 1px solid #80528f;
+    border-radius: 8px 8px 0 0;
+    background: #cfb1dc;
+    color: #302039;
+    cursor: pointer;
+}
+
+.notebook-tab.active {
+    background: #8150a0;
+    color: white;
+    font-weight: bold;
+}
+
+.notebook-tab:focus-visible {
+    outline: 3px solid #d4a54a;
+    outline-offset: 2px;
+}
+
+.notebook-page[hidden] {
+    display: none !important;
+}
+#case-title,
+#case-archive-title,
+#r02-title,
+#r04-title {
+    font-family: Georgia, serif;
+    color: #493052;
+    border-bottom: 2px solid #a48254;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+}
+
+#record-r01 {
+    margin-top: 0.5rem;
+    padding: 0.75rem;
+    border: 1px solid #b8a57f;
+    background: #fffdf4;
 }

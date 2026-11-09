@@ -34,6 +34,7 @@
 <!-- The bookshelves are painted into the background picture now, so #bookcase is only an
      invisible layer. The button below sits over the painted Suspicious Begonias book. -->
 <div id="bookcase">
+    <button type="button" id="mysteries-book" aria-label="M.Q. Mysteries: examine R04" aria-haspopup="dialog" aria-controls="record-r04-dialog"></button>
     <button
         type="button"
         id="begonia-book"
@@ -149,30 +150,37 @@
 
     <button type="button" id="close-notebook">Save & Close 📓</button>
 
+<div class="notebook-tabs" aria-label="Notebook sections">
+  <button type="button" class="notebook-tab active"
+          data-page="evidence-page">
+    Evidence
+  </button>
+
+  <button type="button" class="notebook-tab"
+          data-page="notes-page">
+    Field Notes
+  </button>
+
+  <button type="button" class="notebook-tab"
+          data-page="case-page">
+    Case #001
+  </button>
+</div>
+
     <p>
         Use this notebook to write down observations, questions, and theories.
     </p>
-
-<section id="notebook-evidence">
+    <div id="evidence-page" class="notebook-page">
+    <!-- Your EXISTING Collected Evidence section stays here -->
+   
+    <section id="notebook-evidence">
     <h4>Collected Evidence</h4>
 
     <p id="notebook-no-evidence">
         No collected documents yet.
     </p>
-
-    <div id="notebook-r02" hidden>
-        <p>
-            <strong>R02 — Revised Plant Delivery Register</strong>
-        </p>
-
-        <p>Found in the agency filing cabinet.</p>
-
-        <button type="button" id="notebook-open-r02">
-            Examine R02
-        </button>
-    </div>
-
-    <div id="notebook-r01" hidden>
+        
+    <div id="notebook-r01" data-found-key="recordR01Found" hidden>
     <p>
         <strong>R01 — Plant Delivery Register</strong>
     </p>
@@ -184,8 +192,38 @@
     </button>
     </div>
 
-</section>
+    <div id="notebook-r02" data-found-key="recordR02Found" hidden>
+        <p>
+            <strong>R02 — Revised Plant Delivery Register</strong>
+        </p>
 
+        <p>Found in the agency filing cabinet.</p>
+
+        <button type="button" id="notebook-open-r02">
+            Examine R02
+        </button>
+    </div>
+
+    <div id="notebook-r03" data-found-key="recordR03Found" hidden>
+        <p><strong>R03 — Garden Maintenance Log (draft)</strong></p>
+        <p>Found in the agency filing cabinet.</p>
+        <button type="button" class="dialog-action" data-cabinet-record="filing-cabinet-r03">Examine R03</button>
+    </div>
+
+    <div id="notebook-r04" data-found-key="recordR04Found" hidden>
+        <p><strong>R04 — Witness Observation (draft)</strong></p>
+        <p>Found in M.Q. Mysteries.</p>
+        <button type="button" id="notebook-open-r04" class="dialog-action">Examine R04</button>
+    </div>
+
+    <div id="notebook-r05" data-found-key="recordR05Found" hidden>
+        <p><strong>R05 — Original Delivery Slip (draft)</strong></p>
+        <p>Found in the agency filing cabinet.</p>
+        <button type="button" class="dialog-action" data-cabinet-record="filing-cabinet-r05">Examine R05</button>
+    </div>
+    </section>
+    </div>
+    <div id="notes-page" class="notebook-page" hidden>
     <label for="detective-notes"><strong>Field Notes</strong></label>
     <textarea
         id="detective-notes"
@@ -194,7 +232,17 @@
     ></textarea>
 
     <p id="notes-status" aria-live="polite">Notebook ready.</p>
+</div>
+<div id="case-page" class="notebook-page" hidden>
+  <h3>Case #001</h3>
+  <h4>The Curious Case of the Mixed-Up Records</h4>
+  <p>
+    Several agency records disagree about a
+    mysterious plant delivery.
+  </p>
+</div>
 
+    
 </dialog>
 
 <!-- R02 — Revised Plant Delivery Register -->
@@ -234,8 +282,28 @@
 
 <dialog id="cabinet-preview" class="office-document" aria-labelledby="cabinet-preview-title">
     <h3 id="cabinet-preview-title">Cabinet drawer preview</h3>
-    <p>Development preview only. This record is awaiting approval.</p>
+    <p><strong>Draft preview</strong></p>
+
+<div id="filing-cabinet-r03-draft" class="cabinet-draft" hidden>
+    <p><strong>Bramblewick Garden Society</strong></p>
+    <p>Garden maintenance records mention work near the East Begonia Bed. Freshly disturbed soil was observed in the area, although the entry does not explain what caused the disturbance.</p>
+    <p><em>Record details and author awaiting approval.</em></p>
+</div>
+
+<div id="filing-cabinet-r05-draft" class="cabinet-draft" hidden>
+    <p><strong>Fern &amp; Fable Nursery</strong></p>
+    <p>An original delivery slip records an order of twelve trays of begonias under reference BG-218. Its delivery details may help establish which information in the agency's registers came from the original shipment.</p>
+    <p><em>Original delivery date, location and confirmation details awaiting approval.</em></p>
+</div>
     <form method="dialog"><button type="submit" class="dialog-action">Return to Office</button></form>
+</dialog>
+
+<dialog id="record-r04-dialog" class="office-document" aria-labelledby="r04-title">
+    <h3 id="r04-title">R04 — Witness Observation</h3>
+    <p><strong><p><strong>Bramblewick Garden Society</strong></p>
+<p>A witness reported seeing the begonias move when there was no noticeable breeze. The movement appeared unusual, but the witness could not determine what caused it.</p>
+<p><em>Draft. Witness identity, observation date and exact statement awaiting approval.</em></p></strong> This record concerns a report that the begonias appeared to move. The witness, wording, and date are awaiting approval.</p>
+    <form method="dialog"><button type="submit" class="dialog-action">Close R04</button></form>
 </dialog>
 
 <script src="script.js"></script>

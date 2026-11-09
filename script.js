@@ -71,8 +71,9 @@ if (resetButton) {
         // Forget saved investigation progress.
         localStorage.removeItem("begoniaClueFound");
         localStorage.removeItem("detectiveNotebookNotes");
-        localStorage.removeItem("recordR02Found");
-        localStorage.removeItem("recordR01Found");
+        evidenceEntries.forEach(function (entry) {
+            localStorage.removeItem(entry.dataset.foundKey);
+        });
 
         // Reload the office in its starting state.
         window.location.reload();
@@ -165,46 +166,65 @@ if (filingCabinetButton && r02Dialog && closeR02Button && r02Message) {
     });
 }
 
-// Cabinet previews show placeholders without collecting evidence.
+// The cabinet and notebook open the same draft document.
 const cabinetPreview = document.getElementById("cabinet-preview");
 const cabinetPreviewTitle = document.getElementById("cabinet-preview-title");
+const cabinetRecords = {
+    "filing-cabinet-r03": { title: "R03 — Garden Maintenance Log", key: "recordR03Found" },
+    "filing-cabinet-r05": { title: "R05 — Original Delivery Slip", key: "recordR05Found" }
+};
+
+function openCabinetRecord(id) {
+    cabinetPreviewTitle.textContent = cabinetRecords[id].title;
+    cabinetPreview.querySelectorAll(".cabinet-draft").forEach(function (draft) {
+        draft.hidden = draft.id !== id + "-draft";
+    });
+    cabinetPreview.showModal();
+}
 
 if (cabinetPreview && cabinetPreviewTitle) {
-    const previewDrawers = {
-        "filing-cabinet-r03": "R03 — Garden Maintenance Log",
-        "filing-cabinet-r05": "R05 — Original Delivery Slip"
-    };
-
-    for (const [id, title] of Object.entries(previewDrawers)) {
+    for (const [id, record] of Object.entries(cabinetRecords)) {
         const drawer = document.getElementById(id);
         if (drawer) {
             drawer.addEventListener("click", function () {
-                cabinetPreviewTitle.textContent = title;
-                cabinetPreview.showModal();
+                openCabinetRecord(id);
+                if (localStorage.getItem(record.key) !== "true") {
+                    localStorage.setItem(record.key, "true");
+                    updateNotebookEvidence();
+                }
             });
         }
     }
+
+    notebookPanel?.querySelectorAll("[data-cabinet-record]").forEach(function (button) {
+        button.addEventListener("click", function () {
+            const id = button.dataset.cabinetRecord;
+            const record = cabinetRecords[id];
+            if (!record || localStorage.getItem(record.key) !== "true") return;
+            notebookPanel.close();
+            openCabinetRecord(id);
+        });
+    });
 }
 
 // Show collected evidence in the notebook.
 
 const recordR01 = document.getElementById("record-r01");
-const notebookR01 = document.getElementById("notebook-r01");
 const notebookOpenR01 = document.getElementById("notebook-open-r01");
-const notebookR02 = document.getElementById("notebook-r02");
 const notebookNoEvidence = document.getElementById("notebook-no-evidence");
 const notebookOpenR02 = document.getElementById("notebook-open-r02");
 
+
+const evidenceEntries = document.querySelectorAll("#notebook-evidence [data-found-key]");
+
 function updateNotebookEvidence() {
-    const r01Found = localStorage.getItem("recordR01Found") === "true";
-    const r02Found = localStorage.getItem("recordR02Found") === "true";
-
-    if (notebookR01) notebookR01.hidden = !r01Found;
-    if (notebookR02) notebookR02.hidden = !r02Found;
-
-    if (notebookNoEvidence) {
-        notebookNoEvidence.hidden = r01Found || r02Found;
-    }
+    let anyFound = false;
+    evidenceEntries.forEach(function (entry) {
+        const found = localStorage.getItem(entry.dataset.foundKey) === "true";
+        entry.hidden = !found;
+        if (found) anyFound = true;
+    });
+    if (notebookNoEvidence) notebookNoEvidence.hidden = anyFound;
 }
 
 // Check saved discoveries whenever the notebook opens.
@@ -247,6 +267,28 @@ if (notebookOpenR01 && notebookPanel && casePanel && caseButton && recordR01) {
     });
 }
 
+const mysteriesBook = document.getElementById("mysteries-book");
+const r04Dialog = document.getElementById("record-r04-dialog");
+const notebookOpenR04 = document.getElementById("notebook-open-r04");
+
+if (mysteriesBook && r04Dialog) {
+    mysteriesBook.addEventListener("click", function () {
+        if (localStorage.getItem("recordR04Found") !== "true") {
+            localStorage.setItem("recordR04Found", "true");
+            updateNotebookEvidence();
+        }
+        r04Dialog.showModal();
+    });
+}
+
+if (notebookOpenR04 && notebookPanel && r04Dialog) {
+    notebookOpenR04.addEventListener("click", function () {
+        if (localStorage.getItem("recordR04Found") !== "true") return;
+        notebookPanel.close();
+        r04Dialog.showModal();
+    });
+}
+
 // Display the correct state when the page first loads.
 updateNotebookEvidence();
 
@@ -273,3 +315,27 @@ function updateR02OfficeRewards() {
     }
      
 } updateR02OfficeRewards();
+
+const notebookTabs =
+    document.querySelectorAll(".notebook-tab");
+
+const notebookPages =
+    document.querySelectorAll(".notebook-page");
+
+notebookTabs.forEach(function(tab) {
+    tab.addEventListener("click", function() {
+
+        const selectedPage = tab.dataset.page;
+
+        notebookPages.forEach(function(page) {
+            page.hidden = page.id !== selectedPage;
+        });
+
+        notebookTabs.forEach(function(button) {
+            button.classList.toggle(
+                "active",
+                button === tab
+            );
+        });
+    });
+});
