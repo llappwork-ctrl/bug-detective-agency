@@ -71,6 +71,7 @@ if (resetButton) {
         // Forget saved investigation progress.
         localStorage.removeItem("begoniaClueFound");
         localStorage.removeItem("detectiveNotebookNotes");
+        localStorage.removeItem("evidenceBoardLayout");
         localStorage.removeItem("flowerLampAccepted");
         evidenceEntries.forEach(function (entry) {
             localStorage.removeItem(entry.dataset.foundKey);
@@ -194,6 +195,7 @@ if (cabinetPreview && cabinetPreviewTitle) {
                     localStorage.setItem(record.key, "true");
                     updateNotebookEvidence();
                     updateOfficeDecorations();
+                    updateGardenAccess();
                 }
             });
         }
@@ -280,6 +282,7 @@ if (mysteriesBook && r04Dialog) {
         if (localStorage.getItem("recordR04Found") !== "true") {
             localStorage.setItem("recordR04Found", "true");
             updateNotebookEvidence();
+            updateGardenAccess();
         }
         r04Dialog.showModal();
     });
@@ -349,6 +352,36 @@ acceptFlowerLamp.addEventListener("click", function () {
 });
 
 updateFlowerLamp();
+const visitGardenButton = document.getElementById("visit-garden");
+const returnToOfficeButton = document.getElementById("return-to-office");
+const officeScene = document.getElementById("office");
+const gardenScene = document.getElementById("garden-scene");
+
+function updateGardenAccess() {
+    const r03Found = localStorage.getItem("recordR03Found") === "true";
+    const r04Found = localStorage.getItem("recordR04Found") === "true";
+
+    visitGardenButton.hidden = gardenScene.hidden === false || !document.getElementById("evidence-room").hidden || !(r03Found && r04Found);
+}
+
+visitGardenButton.addEventListener("click", function () {
+    officeScene.hidden = true;
+    gardenScene.hidden = false;
+    document.getElementById("open-evidence-room").hidden = true;
+    updateGardenAccess();
+    returnToOfficeButton.focus();
+});
+
+returnToOfficeButton.addEventListener("click", function () {
+    gardenScene.hidden = true;
+    document.getElementById("open-evidence-room").hidden = false;
+    officeScene.hidden = false;
+    updateGardenAccess();
+    visitGardenButton.focus();
+});
+
+updateGardenAccess();
+
 const notebookTabs =
     document.querySelectorAll(".notebook-tab");
 

@@ -684,4 +684,106 @@ body {
 #accept-flower-lamp {
     padding: 8px 16px;
     font-size: 1rem;
+
+}#office[hidden],
+#garden-scene[hidden],
+#visit-garden[hidden] {
+    display: none;
 }
+
+#garden-scene img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+#evidence-room[hidden],
+#open-evidence-room[hidden],
+#evidence-board-records button[hidden] {
+    display: none;
+}
+
+.evidence-board-art {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1672 / 941;
+    min-height: 370px;
+    background: url("images/backgrounds/Mabel Evidence Room.png") center / 100% 100%;
+}
+
+#evidence-board-slots {
+    position: absolute;
+    inset: 12% 15% 20%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 4px;
+}
+
+.evidence-board-slot {
+    min-width: 0;
+    min-height: 0;
+    border: 1px dashed #876a8355;
+    border-radius: 4px;
+}
+
+.evidence-board-card {
+    box-sizing: border-box;
+    height: 100%;
+    padding: 4px;
+    overflow: auto;
+    color: #2d2130;
+    background: #fff3d8;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px #35223355;
+    font-size: clamp(0.75rem, 1.5vw, 1rem);
+    overflow-wrap: anywhere;
+}
+
+.evidence-board-card p {
+    margin: 0.35em 0;
+}
+
+.evidence-board-card select,
+.evidence-board-card button {
+    max-width: 100%;
+}
+
+.evidence-board-magnets {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.evidence-board-magnets img,
+#evidence-magnet-tray img {
+    display: block;
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.evidence-board-loose {
+    background: transparent;
+    box-shadow: none;
+    text-align: center;
+}
+
+#evidence-magnet-tray {
+    position: absolute;
+    top: 86%;
+    left: 34%;
+    display: flex;
+    gap: 4px;
+}
+
+#evidence-magnet-tray button {
+    padding: 0;
+    border: 2px solid transparent;
+    background: #3d231b;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+#evidence-magnet-tray button[aria-pressed="true"] {
+    border-color: #fff1ae;
+}
+

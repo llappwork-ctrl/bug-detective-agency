@@ -18,6 +18,10 @@
     <button type="button" id="reset-investigation">
         ↺ Reset Investigation
     </button>
+    <button type="button" id="visit-garden" hidden>
+    Head to the Garden
+    </button>
+    <button type="button" id="open-evidence-room">Evidence Room</button>
 </div>
 <p class="rotate-hint">Rotate your device sideways for a wider view of the office.</p>
 <div id="flower-lamp-offer" hidden>
@@ -117,8 +121,32 @@
     <img src="images/objects/Flower Pot 1.png" alt="">
 </div>
 
-
 </main>
+<section id="garden-scene" aria-labelledby="garden-title" hidden>
+    <h2 id="garden-title">The Garden</h2>
+    <button type="button" id="return-to-office">Return to the Office</button>
+    <img
+        src="images/backgrounds/Sunlit Storybook Garden Retreat.png"
+        alt="A sunlit storybook garden"
+    >
+</section>
+
+  <section id="evidence-room" aria-labelledby="evidence-room-title" hidden>
+    <h2 id="evidence-room-title">Evidence Room</h2>
+    <button type="button" id="leave-evidence-room">Return to the Office</button>
+    <p>Choose a magnet, then pin a record or place a loose magnet. Drag items or use their Move menu.</p>
+    <div class="evidence-board-art">
+        <div id="evidence-board-slots" aria-label="Whiteboard"></div>
+        <div id="evidence-magnet-tray" role="group" aria-label="Choose a magnet"></div>
+    </div>
+    <div id="evidence-board-records" role="group" aria-label="Collected records">
+        <button type="button" data-pin-record="r01" hidden>Pin R01</button>
+        <button type="button" data-pin-record="r02" hidden>Pin R02</button>
+        <button type="button" id="pin-all-records" disabled>Pin All Collected Evidence</button>
+        <button type="button" id="place-loose-magnet">Place Loose Magnet</button>
+    </div>
+    <p id="evidence-board-status" role="status"></p>
+</section>
 
   <dialog id="case-panel" aria-labelledby="case-title">
   <h3 id="case-title">Case Files</h3>
@@ -311,6 +339,7 @@
 </dialog>
 
 <script src="script.js"></script>
+<script src="evidence-board.js"></script>
 </body>
 </html>
 
