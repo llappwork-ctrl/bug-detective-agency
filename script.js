@@ -71,6 +71,7 @@ if (resetButton) {
         // Forget saved investigation progress.
         localStorage.removeItem("begoniaClueFound");
         localStorage.removeItem("detectiveNotebookNotes");
+        localStorage.removeItem("flowerLampAccepted");
         evidenceEntries.forEach(function (entry) {
             localStorage.removeItem(entry.dataset.foundKey);
         });
@@ -158,6 +159,7 @@ if (filingCabinetButton && r02Dialog && closeR02Button && r02Message) {
                 "New evidence discovered! R02 has been recorded.";
         }
         updateR02OfficeRewards();
+        updateFlowerLamp();
         r02Dialog.showModal();
     });
 
@@ -191,6 +193,7 @@ if (cabinetPreview && cabinetPreviewTitle) {
                 if (localStorage.getItem(record.key) !== "true") {
                     localStorage.setItem(record.key, "true");
                     updateNotebookEvidence();
+                    updateOfficeDecorations();
                 }
             });
         }
@@ -254,6 +257,7 @@ if (recordR01) {
         if (recordR01.open) {
             localStorage.setItem("recordR01Found", "true");
             updateNotebookEvidence();
+            updateFlowerLamp()
         }
     });
 }
@@ -315,7 +319,36 @@ function updateR02OfficeRewards() {
     }
      
 } updateR02OfficeRewards();
+function updateOfficeDecorations() {
+    const r03Found = localStorage.getItem("recordR03Found") === "true";
+    const r05Found = localStorage.getItem("recordR05Found") === "true";
 
+    document.getElementById("flower-pot-3").hidden = !r03Found;
+    document.getElementById("sleeping-kitty").hidden = !r03Found;
+    document.getElementById("flower-pot-2").hidden = !r05Found;
+}
+
+updateOfficeDecorations();
+const flowerLamp = document.getElementById("flower-lamp");
+const flowerLampOffer = document.getElementById("flower-lamp-offer");
+const acceptFlowerLamp = document.getElementById("accept-flower-lamp");
+
+function updateFlowerLamp() {
+    const r01Found = localStorage.getItem("recordR01Found") === "true";
+    const r02Found = localStorage.getItem("recordR02Found") === "true";
+    const lampAccepted = localStorage.getItem("flowerLampAccepted") === "true";
+
+    flowerLamp.hidden = !lampAccepted;
+    flowerLampOffer.hidden = !(r01Found && r02Found && !lampAccepted);
+}
+
+acceptFlowerLamp.addEventListener("click", function () {
+    localStorage.setItem("flowerLampAccepted", "true");
+    updateFlowerLamp();
+    notebookButton.focus();
+});
+
+updateFlowerLamp();
 const notebookTabs =
     document.querySelectorAll(".notebook-tab");
 
