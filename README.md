@@ -2,115 +2,42 @@
 
 *Every bug has a story. Every clue deserves a closer look.*
 
-Welcome to **The Bug Detective Agency**, a quirky, detective-noir-inspired point-and-click mystery game where software bugs become mysteries waiting to be solved.
+Welcome to **The Bug Detective Agency**, a cozy, illustrated point-and-click mystery from **Laura’s Curious Codes**. Explore a whimsical detective study, examine suspicious objects, and follow a trail of paperwork that refuses to agree with itself.
 
-Step into a cozy, old-fashioned private investigator's office, examine suspicious objects, follow clues, and meet **Mabel Quibble**, an eccentric woman with an extraordinary talent for noticing things other people overlook.
-
-Mabel has also made herself rather comfortable in the detective's office. She's claimed the chaise lounge, developed strong opinions about the begonias, and may gradually introduce a few decorative improvements.
-
-She insists she's only helping.
-
-## 🕵️ About the Project
-
-The Bug Detective Agency is a hands-on learning project created as part of **Laura's Curious Codes**.
-
-I'm using this game to explore web development, software testing, debugging, user experience, and interactive storytelling.
-
-Rather than simply following tutorials, I'm learning by experimenting with code, making design decisions, testing what happens, investigating mistakes, and improving the results.
-
-## 🗂️ Current Progress
-
-**Status: Early interactive prototype**
+Your companion is **Mabel Quibble, Director of Emotional Chaos**. She notices details other people overlook, has strong opinions about begonias, and has claimed the purple chaise lounge. She insists this is all in the interests of the investigation.
 
 🎮 [Play The Bug Detective Agency](https://llappwork-ctrl.github.io/bug-detective-agency/)
 
-The current version includes:
+## 🗂️ What’s in the prototype
 
-- A detective's office built with HTML and CSS
-- A window with Venetian blinds
-- A bookcase, chaise lounge, and detective's desk
-- A clickable case file that opens and closes
-- A clickable *Suspicious Begonias* book that reveals Mabel's dialogue
-- Custom colors, styling, and furniture details
+- Explore the illustrated **Whimsical Detective Study** and inspect interactive objects.
+- Open the **Case Files**, read the archived gnome case, and start collecting evidence for the current investigation.
+- Use the **Detective Notebook** to revisit discovered records and jot down observations, questions, and theories.
+- Pick up where you left off. Discovered clues and notebook notes are saved in your browser. **Reset Investigation** clears them for a fresh start.
+- Look closely as you investigate. Some discoveries change little details in the office.
 
-The office is currently a functional layout prototype. Finished character illustrations, additional rooms, and full mystery gameplay are still planned.
+## 🕵️ On the case board
 
-## 🌻 Meet Mabel Quibble
+**Case #000 — The Missing Garden Gnome** is an archived investigation into the disappearance of Mr. Pickles. The agency closed it. Whether the paperwork deserves quite that much confidence is another matter.
 
-**Director of Emotional Chaos**
+**Case #001 — The Curious Case of the Mixed-Up Records** is the current investigation. Several records disagree about a mysterious plant delivery. Compare what you find and decide which details deserve a closer look.
 
-Mabel enjoys mysteries, sunshine, colorful surroundings, and a good chaise lounge.
+You can explore the office, open records, and start gathering evidence now. The full mystery, garden investigation, and case resolution are still in development.
 
-She has a particular suspicion of begonias.
+## 🛠️ What I’m learning
 
-As the game develops, Mabel may gradually make herself more at home in the detective's office, adding little touches that observant players can discover.
+I’m building the game to learn web development, testing, debugging, and interactive storytelling. I make the creative decisions, arrange and test the office, and practice small code changes myself. AI helps with teaching, artwork, and some implementation. I use the browser to check how those changes actually behave.
 
-She's not taking over the office.
+- **HTML, CSS, and JavaScript** for the office, its appearance, and its interactions.
+- **VS Code and browser DevTools** for editing, inspecting, and troubleshooting.
+- **Git and GitHub** for reviewing changes, making checkpoints, and publishing the game.
 
-At least, that's what she says.
+### 🧪 Practice bugs
 
-## 🕵️ Planned Mysteries
+Claude and Codex have planted bugs for me to investigate. My job is to figure out what’s wrong. I reproduce the problem, inspect what the browser is doing, and follow the clues until I can explain the cause. I worked through the investigations myself and used hints on a few when I got stuck.
 
-**Case #000 — The Missing Garden Gnome**
+## 💜 Part of Laura’s Curious Codes
 
-An introductory mystery involving Mr. Pickles, a missing garden gnome, and some suspicious begonias.
-
-**Case #001 — The Curious Case of the Mixed-Up Records**
-
-A mystery exploring record identity, permissions, and regression testing.
-
-Other possible investigations include:
-
-- **The Category Conundrum** — Dependencies and unexpected consequences
-- **The Case of the Wandering Colors** — CSS changes and unexpected visual effects
-
-These investigations are planned concepts, not yet completed playable cases.
-
-## 🛠️ Technologies
-
-- **HTML** — Building the structure of the office
-- **CSS** — Creating the appearance, furniture, and atmosphere
-- **JavaScript** — Making objects interactive
-- **VS Code** — Editing and exploring code
-- **Git and GitHub** — Tracking changes and maintaining project history
-- **Browser Developer Tools** — Inspecting elements, testing styles, and troubleshooting
-
-## 🧪 What I'm Learning
-
-This project is helping me practice:
-
-- Reading and modifying HTML, CSS, and JavaScript
-- Understanding how webpage elements interact
-- Exploring cause and effect when code changes
-- Finding and correcting mistakes
-- Manual and exploratory testing
-- Regression testing after changes
-- Accessibility and readability considerations
-- Reviewing Git changes before committing
-- Documenting progress and learning from each iteration
-
-I'm building this project with AI-assisted guidance while actively learning to understand, customize, test, and troubleshoot the code myself.
-
-My goal is to develop practical skills and demonstrate my learning process accurately—not to present AI-assisted work as code I independently authored from scratch.
-
-## 🎨 What's Next?
-
-Future ideas include:
-
-- Original detective-noir-inspired artwork
-- A choice of detective identity or form of address
-- Additional rooms to investigate
-- Interactive clues and mystery progression
-- Subtle changes to Mabel's corner as cases progress
-- More accessibility and usability testing
-- A playable browser version
-
-Features will be developed and tested in small steps as my skills grow.
-
-## 💜 Part of Laura's Curious Codes
-
-The Bug Detective Agency is one project in my ongoing learning portfolio.
-
-[Visit Laura's Curious Codes](https://github.com/llappwork-ctrl/lauras-curious-codes)
+[Visit Laura’s Curious Codes](https://github.com/llappwork-ctrl/lauras-curious-codes)
 
 *Case status: Investigation in progress.* 🔎
