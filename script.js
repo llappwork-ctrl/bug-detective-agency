@@ -12,6 +12,7 @@ if (caseButton && casePanel && closeCaseButton) {
     // Open the notebook.
     caseButton.addEventListener("click", function () {
         casePanel.showModal();
+        discoverR01();
         caseButton.setAttribute("aria-expanded", "true");
     });
 
@@ -254,21 +255,18 @@ if (notebookOpenR02 && notebookPanel && r02Dialog && r02Message) {
             r02Dialog.showModal();
     });
 }
-if (recordR01) {
-    recordR01.addEventListener("toggle", function () {
-        if (recordR01.open) {
-            localStorage.setItem("recordR01Found", "true");
-            updateNotebookEvidence();
-            updateFlowerLamp()
-        }
-    });
+function discoverR01() {
+    if (!recordR01 || localStorage.getItem("recordR01Found") === "true") return;
+    localStorage.setItem("recordR01Found", "true");
+    updateNotebookEvidence();
+    updateFlowerLamp();
 }
 
 if (notebookOpenR01 && notebookPanel && casePanel && caseButton && recordR01) {
     notebookOpenR01.addEventListener("click", function () {
         notebookPanel.close();
-        recordR01.open = true;
         casePanel.showModal();
+        discoverR01();
         caseButton.setAttribute("aria-expanded", "true");
     });
 }

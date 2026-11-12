@@ -134,22 +134,27 @@
   <section id="evidence-room" aria-labelledby="evidence-room-title" hidden>
     <h2 id="evidence-room-title">Evidence Room</h2>
     <button type="button" id="leave-evidence-room">Return to the Office</button>
-    <p>Choose a magnet, then pin a record or place a loose magnet. Drag items or use their Move menu.</p>
+    <p>Place your evidence here on the board. Help yourself to the magnets in the tray.</p>
     <div class="evidence-board-art">
         <div id="evidence-board-slots" aria-label="Whiteboard"></div>
-        <div id="evidence-magnet-tray" role="group" aria-label="Choose a magnet"></div>
+        <div id="evidence-magnet-tray" role="group" aria-label="Place a magnet"></div>
+        
     </div>
     <div id="evidence-board-records" role="group" aria-label="Collected records">
         <button type="button" data-pin-record="r01" hidden>Pin R01</button>
         <button type="button" data-pin-record="r02" hidden>Pin R02</button>
+        <button type="button" data-pin-record="r03" hidden>Pin R03</button>
+        <button type="button" data-pin-record="r04" hidden>Pin R04</button>
+        <button type="button" data-pin-record="r05" hidden>Pin R05</button>
         <button type="button" id="pin-all-records" disabled>Pin All Collected Evidence</button>
-        <button type="button" id="place-loose-magnet">Place Loose Magnet</button>
+        <button type="button" id="return-loose-magnets" disabled>Return to tray</button>
     </div>
     <p id="evidence-board-status" role="status"></p>
 </section>
 
   <dialog id="case-panel" aria-labelledby="case-title">
   <h3 id="case-title">Case Files</h3>
+  
   <button type="button" id="close-case-file">Close Case Files ✕</button>
     <ul>
       <li>Case #001: The Curious Case of the Mixed-Up Records — UNSOLVED
@@ -157,8 +162,8 @@
         <h4>Evidence Records</h4>
         
 <article>
-  <details id="record-r01">
-    <summary>R01 — Plant Delivery Register</summary>
+  <section id="record-r01" aria-labelledby="record-r01-title">
+    <h5 id="record-r01-title">R01 — Plant Delivery Register</h5>
 
     <h5>Bramblewick Garden Society</h5>
     <p>Official Plant Delivery Register</p>
@@ -170,7 +175,7 @@
     <p><strong>Delivery Location:</strong> Service entrance</p>
     <p><strong>Recorded By:</strong> Penelope Finch</p>
 
-  </details>
+  </section>
 
 </article>
 
@@ -309,7 +314,11 @@
     <p><strong>Original recorded status: SOLVED</strong></p>
     <p id="mabel-dialogue">The flowers are innocent, Detective. It's what's hiding inside them that confounds me.</p>
     <p>Mr. Pickles disappeared. The earlier investigation accepted a prank explanation without sufficiently verifying his recovery. Historical records and photographs survived the cleanup.</p>
-    <p><em>Archive placeholder: The report (R07), photographs, and statements are awaiting approval.</em></p>
+    <figure>
+        <img src="images/objects/lost_mr._pickles.png" style="max-width: 100%; height: auto;" alt="A dark hole in the grass between the wooden arch and the fountain">
+        <figcaption>Archived garden photo of the fall site, before the begonias arrived.</figcaption>
+    </figure>
+    <p><em>Archive placeholder: The report (R07) and statements are awaiting approval.</em></p>
 </dialog>
 
 <dialog id="cabinet-preview" class="office-document" aria-labelledby="cabinet-preview-title">

@@ -239,8 +239,11 @@ body {
 }
 
 #case-panel {
-  background-color: #fffbe8;
-  border: 2px solid #8a7a5c;
+    background-color: #fff8e7;
+    background-image: url("images/backgrounds/file_paper_copy.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 /* CASE FILES POPUP NOTEBOOK */
 
@@ -713,22 +716,13 @@ body {
 #evidence-board-slots {
     position: absolute;
     inset: 12% 15% 20%;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    gap: 4px;
-}
-
-.evidence-board-slot {
-    min-width: 0;
-    min-height: 0;
-    border: 1px dashed #876a8355;
-    border-radius: 4px;
 }
 
 .evidence-board-card {
     box-sizing: border-box;
-    height: 100%;
+    position: absolute;
+    width: min(42%, 16rem);
+    max-height: 100%;
     padding: 4px;
     overflow: auto;
     color: #2d2130;
@@ -749,6 +743,11 @@ body {
 }
 
 .evidence-board-magnets {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    touch-action: none;
+    cursor: grab;
     display: flex;
     justify-content: space-evenly;
 }
@@ -787,3 +786,6 @@ body {
     border-color: #fff1ae;
 }
 
+
+.evidence-board-card:focus-within { z-index: 1; }
+.evidence-board-loose { width: fit-content; }
